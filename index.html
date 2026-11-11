@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Long to Shorts Clipper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap"
+    />
+    <link rel="stylesheet" href="hark.css" />
+    <link rel="stylesheet" href="hark-hero.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="page" id="top">
+      <main class="main">
+        <div class="x-app">
+          <div class="x-top">
+            <div class="x-top__row"><h1>Long to Shorts</h1><button class="x-btn x-snd" type="button" id="uisnd" aria-pressed="true" aria-label="UI sounds on" title="UI sounds">🔊</button></div>
+            <p>Turn one long video into short vertical clips of 30 to 60 seconds, right in your browser.</p>
+            <ul class="x-badges" aria-label="Features"><li class="pill">No signup</li><li class="pill">No watermark</li><li class="pill">100% free</li><li class="pill">Runs on your device</li></ul>
+          </div>
+
+          <div class="x-alert x-hidden" id="unsupported" role="alert">
+            <strong>This browser can't make clips</strong>
+            <p>It is missing video recording (MediaRecorder or canvas capture). Open this page in the latest Chrome or Edge on a desktop computer or an Android phone.</p>
+          </div>
+
+          <nav aria-label="Steps">
+            <ol class="x-stepper">
+              <li><button type="button" data-go="1" aria-current="step"><span class="x-n">1</span>Upload</button></li>
+              <li><button type="button" data-go="2" disabled><span class="x-n">2</span>Settings</button></li>
+              <li><button type="button" data-go="3" disabled><span class="x-n">3</span>Style</button></li>
+              <li><button type="button" data-go="4" disabled><span class="x-n">4</span>Clips</button></li>
+            </ol>
+          </nav>
+
+          <!-- Step 1 -->
+          <section class="x-panel" id="step1" aria-labelledby="h1s">
+            <h2 id="h1s">Upload</h2>
+            <label class="x-drop" id="drop" for="file">
+              <span class="x-drop__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+              </span>
+              <span class="x-drop__title">Drop a long video here</span>
+              <span class="x-btn x-btn--primary">Choose video</span>
+              <span class="x-hint">MP4, MOV or WebM from your device. It never leaves it.</span>
+              <input class="x-sr" type="file" id="file" accept="video/*" />
+            </label>
+            <div class="x-alert x-hidden" id="err1" role="alert"></div>
+
+            <div class="x-hidden" id="loaded">
+              <div class="x-panel">
+                <video class="x-video" id="preview" controls playsinline preload="auto"></video>
+                <div class="x-card">
+                  <p class="x-name" id="fname"></p>
+                  <section class="stats">
+                    <div class="stat"><span class="stat__fig" id="fdur">00:00:00</span><span class="stat__label">Duration</span></div>
+                    <div class="stat"><span class="stat__fig" id="fclips">0</span><span class="stat__label">Clips, about</span></div>
+                  </section>
+                  <p class="x-note" id="fsum"></p>
+                </div>
+                <button class="x-btn x-btn--primary x-btn--block" type="button" data-go="2">Next: settings</button>
+                <button class="x-btn x-btn--block" type="button" id="another">Choose another video</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 2 -->
+          <section class="x-panel x-hidden" id="step2" aria-labelledby="h2s">
+            <h2 id="h2s">Settings</h2>
+
+            <fieldset class="x-field">
+              <legend>Clip length</legend>
+              <div class="x-seg">
+                <input type="radio" name="len" id="len30" value="30" /><label for="len30">30s</label>
+                <input type="radio" name="len" id="len45" value="45" /><label for="len45">45s</label>
+                <input type="radio" name="len" id="len60" value="60" checked /><label for="len60">60s</label>
+              </div>
+            </fieldset>
+
+            <fieldset class="x-field">
+              <legend>Format</legend>
+              <div class="x-seg x-seg--tall x-seg--grid">
+                <input type="radio" name="fmt" id="fmtV" value="vertical" checked /><label for="fmtV"><span>Vertical 9:16<small>Shorts, Reels</small></span></label>
+                <input type="radio" name="fmt" id="fmtO" value="original" /><label for="fmtO"><span>Keep original<small id="origdim">Same shape</small></span></label>
+                <input type="radio" name="fmt" id="fmtC" value="custom" /><label for="fmtC"><span>Custom frame<small>Pick the 9:16 area</small></span></label>
+                <input type="radio" name="fmt" id="fmtS" value="split" /><label for="fmtS"><span>Split: Webcam + Screen<small>Two frames, 9:16</small></span></label>
+                <input type="radio" name="fmt" id="fmtF" value="face" /><label for="fmtF"><span>Auto face follow<small>9:16, tracks the speaker</small></span></label>
+              </div>
+              <p class="x-hint x-hidden" id="ffmsg" aria-live="polite"></p>
+            </fieldset>
+
+            <div class="x-picker x-hidden" id="picker">
+              <p class="x-label" id="pickh">Drag the boxes over the video</p>
+              <div class="x-stage" id="stage">
+                <canvas id="srccanvas" width="640" height="360" role="img" aria-label="Source video frame"></canvas>
+                <div class="x-box x-box--a" id="boxA" data-box="A" aria-label="Webcam box"><span class="x-box__tag">A · Webcam</span><span class="x-h x-h--nw" data-h="nw"></span><span class="x-h x-h--ne" data-h="ne"></span><span class="x-h x-h--sw" data-h="sw"></span><span class="x-h x-h--se" data-h="se"></span></div>
+                <div class="x-box x-box--b" id="boxB" data-box="B" aria-label="Main screen box"><span class="x-box__tag">B · Main screen</span><span class="x-h x-h--nw" data-h="nw"></span><span class="x-h x-h--ne" data-h="ne"></span><span class="x-h x-h--sw" data-h="sw"></span><span class="x-h x-h--se" data-h="se"></span></div>
+                <div class="x-box" id="boxC" data-box="C" aria-label="Frame box"><span class="x-box__tag">9:16 frame</span><span class="x-h x-h--nw" data-h="nw"></span><span class="x-h x-h--ne" data-h="ne"></span><span class="x-h x-h--sw" data-h="sw"></span><span class="x-h x-h--se" data-h="se"></span></div>
+              </div>
+              <div class="x-legend" id="splitlegend"><span style="--x-c: #ff8a00"><i></i>A · Webcam (top)</span><span style="--x-c: #2f80ff"><i></i>B · Main screen (bottom)</span></div>
+              <div class="x-field">
+                <label class="x-label" for="scrub">Show frame at <span id="scrubt">00:00</span></label>
+                <input class="x-range" type="range" id="scrub" min="0" max="1000" step="1" value="0" />
+              </div>
+              <p class="x-hint" id="pickhint">Drag a box to move it; drag a corner to resize. Works with touch and mouse.</p>
+            </div>
+
+            <div class="x-cropbox">
+              <canvas class="x-preview-canvas" id="cropcanvas" width="180" height="320" aria-label="Live preview of the clip frame" role="img"></canvas>
+              <div class="x-field x-hidden" id="splitfield">
+                <label class="x-label" for="ratio">Split: <span id="ratiot">35% top / 65% bottom</span></label>
+                <input class="x-range" type="range" id="ratio" min="20" max="50" step="1" value="35" />
+                <div class="x-ticks" aria-hidden="true"><span>20%</span><span>35%</span><span>50%</span></div>
+                <label class="x-switch">
+                  <span class="x-label">Swap top/bottom</span>
+                  <input type="checkbox" role="switch" id="swap" />
+                </label>
+                <p class="x-hint">Live 9:16 preview. Each box is cover-cropped into its part, never stretched.</p>
+              </div>
+              <p class="x-hint x-hidden" id="customhint">Live 9:16 preview of your custom frame.</p>
+              <div class="x-field" id="cropfield">
+                <label class="x-label" for="crop">Crop position</label>
+                <input class="x-range" type="range" id="crop" min="0" max="100" step="1" value="50" aria-describedby="croph" />
+                <div class="x-ticks" aria-hidden="true"><span>Left</span><span>Center</span><span>Right</span></div>
+                <p class="x-hint" id="croph">Choose which part of the wide frame stays in the 1080×1920 clip.</p>
+              </div>
+            </div>
+
+            <fieldset class="x-field">
+              <legend>Only clip part of the video <span class="x-hint">(optional)</span></legend>
+              <div class="x-times">
+                <div class="x-field">
+                  <label class="x-hint" for="tstart">Start time</label>
+                  <input class="x-input" id="tstart" type="text" inputmode="decimal" placeholder="00:00:00" autocomplete="off" />
+                </div>
+                <div class="x-field">
+                  <label class="x-hint" for="tend">End time</label>
+                  <input class="x-input" id="tend" type="text" inputmode="decimal" placeholder="00:00:00" autocomplete="off" />
+                </div>
+              </div>
+              <p class="x-hint" id="timeh">Use hh:mm:ss or mm:ss. Leave empty for the whole video.</p>
+            </fieldset>
+
+            <div class="x-field">
+              <label class="x-label" for="maxclips">Max clips</label>
+              <input class="x-input x-number" id="maxclips" type="number" min="1" max="200" step="1" value="200" inputmode="numeric" />
+              <p class="x-hint">1 to 200 clips per run. A 100-minute video at 30s makes 200.</p>
+            </div>
+
+            <label class="x-switch">
+              <span><span class="x-label">Add clip number label</span><br /><span class="x-hint">Shows “Part 1”, “Part 2” at the top</span></span>
+              <input type="checkbox" role="switch" id="label" />
+            </label>
+
+            <div class="x-card">
+              <p class="x-name" id="ssum"></p>
+              <p class="x-note" id="stime"></p>
+            </div>
+            <button class="x-btn x-btn--primary x-btn--block" type="button" data-go="3" id="toClips">Next: style</button>
+          </section>
+
+          <!-- Step 3: Style -->
+          <section class="x-panel x-hidden" id="step3" aria-labelledby="hstyle">
+            <h2 id="hstyle">Style</h2>
+
+            <fieldset class="x-field">
+              <legend>Captions</legend>
+              <div class="x-seg">
+                <input type="radio" name="capsrc" id="srcType" value="type" checked /><label for="srcType">Type</label>
+                <input type="radio" name="capsrc" id="srcFile" value="file" /><label for="srcFile">Load SRT/VTT</label>
+                <input type="radio" name="capsrc" id="srcAuto" value="auto" /><label for="srcAuto">Auto</label>
+              </div>
+              <div class="x-field x-hidden" id="autoPane">
+                <div class="x-times">
+                  <div class="x-field">
+                    <label class="x-hint" for="amodel">Model</label>
+                    <select class="x-input" id="amodel">
+                      <option value="onnx-community/whisper-tiny">Tiny (fastest)</option>
+                      <option value="onnx-community/whisper-base" selected>Base (better)</option>
+                    </select>
+                  </div>
+                  <div class="x-field">
+                    <label class="x-hint" for="alang">Language</label>
+                    <select class="x-input" id="alang">
+                      <option value="">Auto-detect</option>
+                      <option value="english">English</option>
+                      <option value="hindi">Hindi</option>
+                    </select>
+                  </div>
+                </div>
+                <p class="x-hint">Hinglish: choose English for Roman-script output.</p>
+                <fieldset class="x-field">
+                  <legend class="x-hint">Words per caption</legend>
+                  <div class="x-seg">
+                    <input type="radio" name="wpc" id="wpc1" value="1" /><label for="wpc1">1</label>
+                    <input type="radio" name="wpc" id="wpc3" value="3" checked /><label for="wpc3">2–3</label>
+                    <input type="radio" name="wpc" id="wpcL" value="line" /><label for="wpcL">Full line</label>
+                  </div>
+                </fieldset>
+                <div class="x-times">
+                  <div class="x-field">
+                    <label class="x-hint" for="afrom">From</label>
+                    <input class="x-input" id="afrom" type="text" inputmode="decimal" placeholder="00:00" autocomplete="off" />
+                  </div>
+                  <div class="x-field">
+                    <label class="x-hint" for="ato">To</label>
+                    <input class="x-input" id="ato" type="text" inputmode="decimal" placeholder="00:00" autocomplete="off" />
+                  </div>
+                </div>
+                <p class="x-hint">Leave empty to use the range from Settings.</p>
+                <button class="x-btn x-btn--primary x-btn--block" type="button" id="agen">Generate captions</button>
+                <div class="x-card x-hidden" id="aprog" aria-live="polite">
+                  <div class="x-progress__line"><span id="aptext">Reading audio…</span><span id="apct"></span></div>
+                  <div class="x-bar" role="progressbar" aria-label="Caption progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="abar"><span></span></div>
+                  <button class="x-btn x-btn--block" type="button" id="acancel">Cancel</button>
+                </div>
+                <p class="x-hint">Runs on your device. First run downloads the model (about 80 to 150 MB). Works best in Chrome.</p>
+              </div>
+              <div class="x-field x-hidden" id="filePane">
+                <label class="x-hint" for="subfile">Choose an .srt or .vtt file. Its lines fill the caption list.</label>
+                <input class="x-input" type="file" id="subfile" accept=".srt,.vtt,text/vtt,application/x-subrip" />
+              </div>
+              <p class="x-note" id="capmsg" aria-live="polite"></p>
+              <ul class="x-caps" id="caps"></ul>
+              <div class="x-row">
+                <button class="x-btn" type="button" id="addCap">Add caption</button>
+              </div>
+              <p class="x-hint">Times are in the source video, as mm:ss or hh:mm:ss, decimals allowed.</p>
+            </fieldset>
+
+            <fieldset class="x-field">
+              <legend>Template</legend>
+              <div class="x-tpls" id="tpls"></div>
+            </fieldset>
+
+            <div class="x-stylebox">
+              <canvas id="stylecanvas" width="360" height="640" role="img" aria-label="Preview of the captions on the first frame"></canvas>
+              <div class="x-controls">
+                <div class="x-field">
+                  <label class="x-label" for="cfont">Font</label>
+                  <select class="x-input" id="cfont">
+                    <option>Arial Black</option><option>Impact</option><option>Verdana</option><option>Georgia</option><option>Trebuchet MS</option><option>Courier New</option><option>system-ui</option>
+                  </select>
+                </div>
+                <div class="x-field">
+                  <label class="x-label" for="csize">Size</label>
+                  <input class="x-range" type="range" id="csize" min="32" max="120" step="1" value="72" />
+                </div>
+                <div class="x-colors">
+                  <label>Text<input type="color" id="ccolor" value="#ffffff" /></label>
+                  <label>Highlight<input type="color" id="chi" value="#ffd400" /></label>
+                  <label>Outline<input type="color" id="cout" value="#000000" /></label>
+                </div>
+                <label class="x-switch">
+                  <span class="x-label">UPPERCASE</span>
+                  <input type="checkbox" role="switch" id="cupper" />
+                </label>
+                <div class="x-field">
+                  <label class="x-label" for="cpos">Position</label>
+                  <input class="x-range" type="range" id="cpos" min="8" max="92" step="1" value="70" />
+                  <div class="x-ticks" aria-hidden="true"><span>Top</span><span>Middle</span><span>Bottom</span></div>
+                </div>
+              </div>
+            </div>
+
+            <details class="x-boost" id="boost">
+              <summary>⚡ Boost</summary>
+              <div class="x-boost__body">
+                <div class="x-field">
+                  <label class="x-label" for="bhook">Hook title, first 3 seconds</label>
+                  <div class="x-boost__row">
+                    <input class="x-input" id="bhook" type="text" maxlength="80" placeholder="Wait for it 😳" autocomplete="off" />
+                    <button class="x-btn" type="button" id="bhookAuto">Auto</button>
+                  </div>
+                </div>
+                <label class="x-switch"><span class="x-label">Progress bar</span><input type="checkbox" role="switch" id="bpb" checked /></label>
+                <div class="x-boost__row">
+                  <select class="x-input" id="bpbpos" aria-label="Progress bar position"><option value="bottom">Bottom</option><option value="top">Top</option></select>
+                  <input type="color" id="bpbcol" value="#ffd400" aria-label="Progress bar colour" />
+                </div>
+                <label class="x-switch"><span class="x-label">Blur background fill</span><input type="checkbox" role="switch" id="bblur" /></label>
+                <p class="x-hint">Blur fills the 9:16 frame around a video kept in its original shape.</p>
+                <label class="x-switch"><span class="x-label">Auto zoom punch-ins</span><input type="checkbox" role="switch" id="bzoom" /></label>
+                <div class="x-field">
+                  <label class="x-label" for="bzs">Zoom strength: <span id="bzsv">1.15</span>×</label>
+                  <input class="x-range" type="range" id="bzs" min="1.05" max="1.3" step="0.01" value="1.15" />
+                </div>
+                <p class="x-hint">Zooms on loud spikes from Analyze video, or on ALL CAPS and “!” words from auto captions.</p>
+                <label class="x-switch"><span class="x-label">Sound effects</span><input type="checkbox" role="switch" id="bsfx" /></label>
+                <div class="x-boost__row">
+                  <input class="x-range" type="range" id="bsfxv" min="0" max="1" step="0.05" value="0.6" aria-label="Sound effects volume" />
+                  <button class="x-btn" type="button" id="bsfxt">Test</button>
+                </div>
+                <p class="x-hint">Whoosh on the hook, boom or pop on each zoom. Recorded into the clip.</p>
+                <div class="x-field">
+                  <label class="x-label" for="uivol">App sound volume: <span id="uivolv">40</span>%</label>
+                  <input class="x-range" type="range" id="uivol" min="0" max="100" step="5" value="40" />
+                  <p class="x-hint">Taps and chimes while you work. Never recorded into clips.</p>
+                </div>
+                <label class="x-switch"><span class="x-label">Emoji + keyword captions</span><input type="checkbox" role="switch" id="bemoji" /></label>
+                <div class="x-field">
+                  <label class="x-label" for="mtop">Best moments to find (10-30)</label>
+                  <div class="x-boost__row">
+                    <input class="x-input" id="mtop" type="number" min="10" max="30" value="15" />
+                    <button class="x-btn" type="button" id="manalyze">Analyze video</button>
+                  </div>
+                </div>
+                <div class="x-hidden" id="mprog" aria-live="polite">
+                  <p class="x-hint" id="mmsg"></p>
+                  <div class="x-bar" role="progressbar" aria-label="Analysis progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="mbar"><span></span></div>
+                </div>
+                <ol class="x-moments" id="mlist"></ol>
+                <video class="x-hidden x-mvid" id="mvid" playsinline controls></video>
+                <button class="x-btn x-hidden" type="button" id="mmake">Make clips from best moments</button>
+                <p class="x-hint x-hidden" id="mused">The clip list uses your best moments. <button class="x-btn" type="button" id="mclear">Use regular parts</button></p>
+                <label class="x-switch"><span class="x-label">Cut silences</span><input type="checkbox" role="switch" id="bcut" /></label>
+                <div class="x-field">
+                  <label class="x-label" for="bgap">Minimum silence to cut: <span id="bgapv">0.6</span>s</label>
+                  <input class="x-range" type="range" id="bgap" min="0.4" max="2" step="0.1" value="0.6" />
+                </div>
+              </div>
+            </details>
+
+            <button class="x-btn x-btn--primary x-btn--block" type="button" data-go="4" id="toClips2">Next: see clips</button>
+          </section>
+
+          <!-- Step 4 -->
+          <section class="x-panel x-hidden" id="step4" aria-labelledby="h3s">
+            <div class="x-row x-row--split">
+              <h2 id="h3s">Clips</h2>
+              <button class="x-btn" type="button" data-go="2" id="backSettings">Change settings</button>
+            </div>
+            <p class="x-note">If downloads are blocked inside the Hark app, open this Page in Chrome using its share link.</p>
+            <p class="x-note" id="csum"></p>
+            <div class="x-alert x-alert--info">
+              <strong>Clips record in real time</strong>
+              <p>Export runs in real time: 100 clips of 30s ≈ 50 minutes. Keep this tab open and in front.</p>
+            </div>
+            <div class="x-alert x-hidden" id="hiddenwarn" role="alert">
+              <strong>This tab was hidden</strong>
+              <p>Browsers slow down hidden tabs, so recording may stall. Keep this tab in front until the queue finishes.</p>
+            </div>
+
+            <button class="x-btn x-btn--primary x-btn--block" type="button" id="makeAll">Make all clips</button>
+            <div class="x-card x-hidden" id="progress" aria-live="polite">
+              <div class="x-progress__line"><span id="ptext">Clip 1 of 1</span><span id="peta"></span></div>
+              <div class="x-bar" role="progressbar" aria-label="Progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="pbar"><span></span></div>
+              <div class="x-qbtns">
+                <button class="x-btn" type="button" id="pause">Pause</button>
+                <button class="x-btn" type="button" id="stop">Cancel</button>
+              </div>
+            </div>
+            <p class="x-note" id="cstatus" aria-live="polite"></p>
+            <div class="x-alert x-hidden" id="err3" role="alert"></div>
+
+            <div class="x-row x-row--split">
+              <p class="x-note" id="donecount">0 ready</p>
+              <button class="x-btn" type="button" id="dlAll" disabled>Download all</button>
+            </div>
+            <ul class="x-clips" id="clips"></ul>
+            <p class="x-hint">Tap a clip to make only that one.</p>
+          </section>
+
+          <section class="x-tips-wrap" aria-labelledby="tipsh">
+            <h2 id="tipsh">Tips</h2>
+            <ul class="x-tips">
+              <li>Works best in Chrome or Edge.</li>
+              <li>Keep the tab open while clips are being made.</li>
+              <li>Your video stays on your device. Nothing is uploaded.</li>
+            </ul>
+          </section>
+        </div>
+      </main>
+      <footer class="foot">
+        <p>Only use videos you own or have rights to.</p>
+        <a class="badge" href="https://hark.com/" target="_blank" rel="noopener"><span class="hark-mark"></span><span>built by hark</span></a>
+      </footer>
+    </div>
+
+    <video id="rec" class="x-offscreen" playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+    <video id="thumbv" class="x-offscreen" playsinline muted preload="auto" aria-hidden="true" tabindex="-1"></video>
+    <video id="stylev" class="x-offscreen" playsinline muted preload="auto" aria-hidden="true" tabindex="-1"></video>
+    <video id="probev" class="x-offscreen" playsinline muted preload="metadata" aria-hidden="true" tabindex="-1"></video>
+
+    <dialog class="x-modal" id="welcome" aria-labelledby="welcomeh">
+      <div class="x-modal__in">
+        <h2 id="welcomeh">Welcome! 👋</h2>
+        <p>This is a free tool for everyone. The tool is in its testing phase, and more tools are coming in the future. For any suggestions, support or problems, contact us on Instagram at <a href="https://www.instagram.com/alex_official._0/" target="_blank" rel="noopener">@alex_official._0</a> in DM. Thanks for coming, and enjoy!</p>
+        <button class="x-btn x-btn--primary x-btn--block" type="button" id="welcomeDone">Done</button>
+      </div>
+    </dialog>
+
+    <script src="hark.js"></script>
+    <script src="app.js"></script>
+    <script src="ui-sounds.js"></script>
+  </body>
+</html>
