@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -12,6 +12,7 @@
     <meta property="og:title" content="Long to Shorts Clipper – Free Shorts & Reels Maker" />
     <meta property="og:description" content="Turn long videos into Shorts and Reels with captions, hooks and music. Free, no watermark, no signup." />
     <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#08080f" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -224,12 +225,185 @@
       .x-preset:focus-visible { outline: 2px solid var(--fill-primary); outline-offset: 2px; }
       .x-toast { position: fixed; left: 50%; bottom: 24px; z-index: 1002; max-width: calc(100vw - 32px); padding: 12px 20px; border-radius: var(--r-pill); background: var(--fill-primary); color: var(--text-primary-on); font: var(--type-label); box-shadow: var(--hark-shadow); transform: translate(-50%, 16px); opacity: 0; pointer-events: none; transition: opacity var(--dur-quick) var(--ease-out), transform var(--dur-quick) var(--ease-out); }
       .x-toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+      /* ===== v3: dark theme, animated background ===== */
+      :root { --x-violet: #7c5cff; --x-pink: #ff4fa3; --x-orange: #ff8a3d; --x-cyan: #2ee6d6; --x-grad: linear-gradient(120deg, #6d4aff 0%, #c2338f 55%, #e0561a 100%); --x-head-h: 60px; }
+      body { background: #08080f; }
+      .x-bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; background: radial-gradient(120% 80% at 50% -10%, #1a1440 0%, #0d0b1f 45%, #08080f 75%); }
+      .x-bg::before { content: ""; position: absolute; left: -50%; top: -50%; width: 200%; height: 200%; background: conic-gradient(from 0deg at 50% 50%, rgb(124 92 255 / 0.10), rgb(46 230 214 / 0.06), rgb(255 79 163 / 0.09), rgb(255 138 61 / 0.05), rgb(124 92 255 / 0.10)); animation: x-spin 60s linear infinite; will-change: transform; }
+      .x-orb { position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%; opacity: 0.55; will-change: transform; animation: x-float 26s ease-in-out infinite alternate; }
+      .x-orb--1 { left: -22vmax; top: -18vmax; background: radial-gradient(circle, rgb(124 92 255 / 0.55) 0%, rgb(124 92 255 / 0) 62%); }
+      .x-orb--2 { right: -24vmax; top: 18vh; background: radial-gradient(circle, rgb(255 79 163 / 0.38) 0%, rgb(255 79 163 / 0) 62%); animation-duration: 32s; animation-delay: -8s; }
+      .x-orb--3 { left: -10vmax; bottom: -30vmax; background: radial-gradient(circle, rgb(46 230 214 / 0.26) 0%, rgb(46 230 214 / 0) 62%); animation-duration: 38s; animation-delay: -15s; }
+      .x-orb--4 { right: -14vmax; bottom: -26vmax; width: 44vmax; height: 44vmax; background: radial-gradient(circle, rgb(255 138 61 / 0.30) 0%, rgb(255 138 61 / 0) 62%); animation-duration: 29s; animation-delay: -4s; }
+      @keyframes x-float { 0% { transform: translate3d(0, 0, 0) scale(1); } 50% { transform: translate3d(6vmax, 4vmax, 0) scale(1.08); } 100% { transform: translate3d(-4vmax, 7vmax, 0) scale(0.95); } }
+      @keyframes x-spin { to { transform: rotate(360deg); } }
+      .x-busy .x-bg::before, .x-busy .x-orb { animation-play-state: paused; }
+
+      /* ===== v3: sticky header ===== */
+      .page { padding-top: 0; }
+      .x-head { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 8px; min-height: var(--x-head-h); margin: 0 calc(var(--gutter) * -1); padding: 8px var(--gutter); padding-top: max(8px, env(safe-area-inset-top)); }
+      .x-head::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 100vw; z-index: -1; transform: translateX(-50%); background: rgb(8 8 15 / 0.55); -webkit-backdrop-filter: blur(18px) saturate(1.4); backdrop-filter: blur(18px) saturate(1.4); border-bottom: 1px solid transparent; transition: border-color var(--dur-quick) ease, background var(--dur-quick) ease; }
+      .x-scrolled .x-head::before { background: rgb(8 8 15 / 0.82); border-bottom-color: var(--stroke-secondary); }
+      .x-head__brand { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: var(--tap); min-width: var(--tap); padding-right: 4px; color: var(--text-primary); text-decoration: none; font: var(--type-body-strong); }
+      .x-head__logo { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; background: var(--x-grad); font-size: 17px; box-shadow: 0 0 18px rgb(124 92 255 / 0.45); }
+      .x-head__nav { display: flex; gap: 2px; min-width: 0; margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+      .x-head__nav::-webkit-scrollbar { display: none; }
+      .x-head__nav a { flex: none; display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 11px; border-radius: var(--r-pill); color: var(--text-secondary); font: var(--type-label); text-decoration: none; white-space: nowrap; transition: color var(--dur-quick) ease, background var(--dur-quick) ease; }
+      .x-head__nav a:hover { color: var(--text-primary); background: var(--hover-wash); }
+      .x-head__nav a[aria-current="true"] { color: var(--text-primary); background: rgb(124 92 255 / 0.22); box-shadow: inset 0 0 0 1px rgb(124 92 255 / 0.45); }
+      @media (max-width: 599px) { .x-head__name { display: none; } .x-head__nav a { padding: 0 9px; font-size: 13px; } }
+      #tool, #boost, .x-sec { scroll-margin-top: calc(var(--x-head-h) + 12px); }
+
+      /* ===== v3: buttons ===== */
+      .x-btn, .x-preset, .x-tab { position: relative; overflow: hidden; isolation: isolate; -webkit-tap-highlight-color: transparent; transition: transform 0.16s var(--ease-out), box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease, color 0.2s ease, filter 0.25s ease; }
+      .x-btn:hover:not(:disabled), .x-preset:hover { border-color: rgb(124 92 255 / 0.6); box-shadow: inset 0 0 0 100px var(--hover-wash), 0 0 0 1px rgb(124 92 255 / 0.25), 0 6px 22px rgb(124 92 255 / 0.22); }
+      .x-btn:active:not(:disabled), .x-preset:active, .x-tab:active { transform: scale(0.95); }
+      .x-btn--primary { background: var(--x-grad); color: #fff; font-weight: var(--weight-bold); text-shadow: 0 1px 2px rgb(0 0 0 / 0.25); box-shadow: 0 6px 24px rgb(194 51 143 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.25); }
+      .x-btn--primary:hover:not(:disabled) { filter: brightness(1.08) saturate(1.1); box-shadow: 0 8px 32px rgb(194 51 143 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.12), inset 0 1px 0 rgb(255 255 255 / 0.3); }
+      .x-btn--primary::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%; z-index: -1; background: linear-gradient(100deg, rgb(255 255 255 / 0) 0%, rgb(255 255 255 / 0.38) 50%, rgb(255 255 255 / 0) 100%); transform: skewX(-20deg); pointer-events: none; animation: x-shine 5.5s ease-in-out 2s infinite; }
+      .x-btn--primary:hover::after, .x-btn--primary:focus-visible::after { animation: x-shine-now 0.8s ease-out; }
+      .x-btn--primary:disabled::after { display: none; }
+      @keyframes x-shine { 0%, 82% { left: -60%; } 100% { left: 130%; } }
+      @keyframes x-shine-now { from { left: -60%; } to { left: 130%; } }
+      .x-btn::before, .x-preset::before, .x-tab::before { content: ""; position: absolute; left: var(--rx, 50%); top: var(--ry, 50%); width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; z-index: -1; background: currentColor; opacity: 0; transform: scale(0); pointer-events: none; }
+      .is-rip::before { animation: x-rip 0.6s ease-out; }
+      @keyframes x-rip { from { opacity: 0.28; transform: scale(0); } to { opacity: 0; transform: scale(36); } }
+      .x-busy .x-btn--primary::after { animation: none; }
+      .x-stepper button { transition: background 0.25s ease, color 0.2s ease, transform 0.16s var(--ease-out); }
+      .x-stepper button:active:not(:disabled) { transform: scale(0.95); }
+      .x-stepper button[aria-current="step"], .x-preset[aria-pressed="true"] { background: var(--x-grad); color: #fff; border-color: transparent; box-shadow: 0 4px 18px rgb(124 92 255 / 0.35); }
+      .x-linkbtn { min-height: var(--tap); padding: 0 4px; border: 0; background: none; color: var(--text-primary); font: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+      /* ===== v3: intro card (was the welcome popup) ===== */
+      .x-intro { width: min(480px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); margin: max(12px, env(safe-area-inset-top)) auto auto; overflow: auto; overscroll-behavior: contain; background: linear-gradient(180deg, #17142c 0%, #111019 60%); border-color: rgb(124 92 255 / 0.35); box-shadow: 0 20px 60px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.04), 0 0 60px rgb(124 92 255 / 0.25); }
+      .x-intro[open] { animation: x-drop-in 0.45s var(--ease-out); }
+      .x-intro.is-fallback { margin-top: 12px; max-height: calc(100vh - 24px); }
+      .x-intro::backdrop { background: rgb(4 4 10 / 0.55); backdrop-filter: blur(3px); }
+      @keyframes x-drop-in { from { opacity: 0; transform: translateY(-18px) scale(0.98); } to { opacity: 1; transform: none; } }
+      .x-intro__in { position: relative; gap: 14px; padding: 22px 20px 20px; text-align: left; }
+      .x-intro__in h2 { font: var(--type-title); padding-right: 40px; }
+      .x-intro__x { position: absolute; top: 8px; right: 8px; width: var(--tap); height: var(--tap); display: grid; place-items: center; border: 0; border-radius: 50%; background: var(--hover-wash); color: var(--text-secondary); font-size: 16px; cursor: pointer; transition: background 0.2s ease, color 0.2s ease, transform 0.16s ease; }
+      .x-intro__x:hover { background: rgb(255 255 255 / 0.1); color: var(--text-primary); }
+      .x-intro__x:active { transform: scale(0.92); }
+      .x-kicker { font: var(--type-tag); letter-spacing: 0.06em; text-transform: uppercase; background: linear-gradient(90deg, #a996ff, #ff8cc6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .x-modal__in p.x-intro__lead { color: var(--text-primary); }
+      .x-intro__feats { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font: var(--type-small); }
+      .x-intro__trend { display: grid; gap: 10px; padding: 14px; border-radius: var(--r-l); background: rgb(255 255 255 / 0.04); border: 1px solid var(--stroke-secondary); }
+      .x-intro__trendhead { display: grid; gap: 4px; }
+      .x-intro__trendhead h3 { font: var(--type-body-strong); }
+      .x-intro__stamp { justify-self: start; padding: 2px 8px; border-radius: var(--r-pill); background: rgb(124 92 255 / 0.18); color: #c9bdff; font: var(--type-caption); }
+      .x-intro__trends { margin: 0; padding: 0; list-style: none; counter-reset: tr; display: grid; gap: 8px; }
+      .x-intro__trends li { counter-increment: tr; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 0 8px; font: var(--type-small); }
+      .x-intro__trends li::before { content: counter(tr); grid-row: span 2; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: var(--x-grad); color: #fff; font: var(--type-tag); }
+      .x-intro__trends b { font-weight: var(--weight-medium); }
+      .x-intro__trends span { color: var(--text-secondary); font-size: var(--size-meta); }
+      .x-modal__in .x-intro__ig { font: var(--type-small); }
+      .x-intro .x-modal__in a { min-height: var(--tap); }
+
+      /* ===== v3: Clip Studio ===== */
+      .x-studio { position: relative; border: 1px solid rgb(124 92 255 / 0.35); border-radius: var(--r-l); background: linear-gradient(180deg, rgb(28 24 52 / 0.92), rgb(17 16 26 / 0.94)); box-shadow: 0 12px 40px rgb(0 0 0 / 0.35), 0 0 40px rgb(124 92 255 / 0.12); }
+      .x-studio > summary.x-studio__head { min-height: 64px; padding: 14px 18px; gap: 12px; }
+      .x-studio__titles { display: grid; gap: 2px; min-width: 0; }
+      .x-studio__title { font: var(--type-heading); }
+      .x-studio__subt { font: var(--type-small); color: var(--text-secondary); }
+      .x-studio > summary::after { flex: none; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--hover-wash); }
+      .x-studio__body { gap: 16px; padding: 0 18px 20px; }
+      .x-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; border-radius: var(--r-l); background: rgb(0 0 0 / 0.28); border: 1px solid var(--stroke-secondary); }
+      .x-tab { flex: 1 1 auto; min-height: var(--tap); padding: 0 12px; border: 0; border-radius: var(--r-pill); background: transparent; color: var(--text-secondary); font: var(--type-label); white-space: nowrap; cursor: pointer; }
+      .x-tab:hover { color: var(--text-primary); background: var(--hover-wash); }
+      .x-tab[aria-selected="true"] { background: var(--x-grad); color: #fff; box-shadow: 0 4px 16px rgb(194 51 143 / 0.35); }
+      .x-tabs { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; border-radius: var(--r-pill); -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
+      .x-tabs::-webkit-scrollbar { display: none; }
+      .x-tab { flex: none; scroll-snap-align: start; }
+      .x-tab:last-child { margin-right: 28px; }
+      @media (min-width: 600px) { .x-tabs { -webkit-mask-image: none; mask-image: none; } .x-tab { flex: 1 1 auto; padding: 0 8px; font-size: 13px; } .x-tab:last-child { margin-right: 0; } }
+      .x-studio__panel { display: grid; gap: 16px; padding: 4px 2px 0; }
+      .x-studio__panel[hidden] { display: none; }
+      .x-studio__panel:not([hidden]) { animation: x-fade-up 0.3s var(--ease-out); }
+      @keyframes x-fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+      .x-studio__hint { padding: 10px 12px; border-radius: var(--r-m); background: rgb(124 92 255 / 0.1); border-left: 3px solid var(--x-violet); font: var(--type-small); color: var(--text-secondary); }
+      .x-studio__sub { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--stroke-secondary); font: var(--type-tag); letter-spacing: 0.06em; text-transform: uppercase; color: #b9aaff; }
+      .x-studio__hint + .x-studio__sub { margin-top: 0; padding-top: 0; border-top: 0; }
+
+      /* ===== v3: bottom sections + footer ===== */
+      .x-more { display: grid; gap: 56px; width: 100%; max-width: 980px; margin: 40px auto 8px; }
+      .x-sec { display: grid; gap: 20px; }
+      .x-sec__head { display: grid; gap: 6px; max-width: 640px; }
+      .x-sec h2 { font: var(--type-title); }
+      .x-sec__lead { font: var(--type-body); color: var(--text-secondary); }
+      .x-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+      .x-cardx { position: relative; display: grid; align-content: start; gap: 8px; padding: 18px; border-radius: var(--r-l); background: rgb(22 21 34 / 0.78); border: 1px solid var(--stroke-secondary); transition: transform 0.25s var(--ease-out), border-color 0.25s ease, box-shadow 0.25s ease; }
+      .x-cardx:hover { transform: translateY(-3px); border-color: rgb(124 92 255 / 0.45); box-shadow: 0 10px 30px rgb(124 92 255 / 0.18); }
+      .x-cardx__ic { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: rgb(124 92 255 / 0.16); font-size: 22px; }
+      .x-cardx h3 { font: var(--type-body-strong); }
+      @media (min-width: 900px) { .x-cards { grid-template-columns: repeat(5, minmax(0, 1fr)); } .x-cardx { padding: 16px; } }
+      .x-cardx p { font: var(--type-small); color: var(--text-secondary); }
+      .x-soonpill { justify-self: start; margin-top: 4px; padding: 3px 9px; border-radius: var(--r-pill); background: rgb(255 138 61 / 0.15); color: #ffb48a; font: var(--type-tag); }
+      .x-about { display: grid; gap: 16px; padding: 22px; border-radius: var(--r-l); background: rgb(22 21 34 / 0.78); border: 1px solid var(--stroke-secondary); }
+      .x-about__text { display: grid; gap: 12px; font: var(--type-body); }
+      .x-about__text p + p { color: var(--text-secondary); }
+      .x-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+      .x-facts li { display: flex; align-items: center; gap: 10px; min-height: var(--tap); padding: 0 14px; border-radius: var(--r-m); background: rgb(255 255 255 / 0.04); font: var(--type-small); }
+      @media (min-width: 761px) { .x-about { grid-template-columns: 1.4fr 1fr; align-items: center; gap: 28px; padding: 28px; } }
+      .x-faq { display: grid; gap: 8px; max-width: 760px; }
+      .x-qa { border-radius: var(--r-m); background: rgb(22 21 34 / 0.78); border: 1px solid var(--stroke-secondary); transition: border-color 0.25s ease; }
+      .x-qa[open] { border-color: rgb(124 92 255 / 0.4); }
+      .x-qa summary { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 10px 16px; font: var(--type-body-strong); cursor: pointer; list-style: none; }
+      .x-qa summary::-webkit-details-marker { display: none; }
+      .x-qa summary::after { content: "+"; flex: none; margin-left: auto; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--hover-wash); color: var(--text-secondary); font: var(--type-body-strong); transition: transform 0.25s var(--ease-out); }
+      .x-qa[open] summary::after { transform: rotate(45deg); }
+      .x-qa p { padding: 0 16px 16px; font: var(--type-small); color: var(--text-secondary); }
+      .x-qa a { color: var(--text-primary); display: inline-flex; align-items: center; min-height: var(--tap); vertical-align: middle; }
+      .x-contact { display: grid; gap: 18px; padding: 26px 22px; border-radius: var(--r-xl); background: linear-gradient(135deg, rgb(109 74 255 / 0.28), rgb(194 51 143 / 0.22) 60%, rgb(224 86 26 / 0.18)); border: 1px solid rgb(255 255 255 / 0.1); }
+      .x-contact > div { display: grid; gap: 6px; }
+      .x-btn--ig { justify-self: start; }
+      @media (min-width: 761px) { .x-contact { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding: 32px; } }
+      .x-foot { display: grid; gap: 18px; justify-content: stretch; margin-top: 24px; padding-top: 28px; }
+      .x-foot__brand { display: grid; gap: 4px; }
+      .x-foot__brand strong { font: var(--type-body-strong); }
+      .x-foot__base { display: grid; gap: 4px; font: var(--type-small); }
+      .x-foot .badge { justify-self: start; }
+      @media (min-width: 900px) { .x-foot { grid-template-columns: minmax(0, 1fr) auto; } .x-foot nav { justify-content: flex-end; } .x-foot .badge { justify-self: end; align-self: end; } }
+
+      .x-linkbtn { padding: 0; }
+      .x-intro .x-kicker { padding-right: 48px; }
+      .x-intro .x-hint { font: var(--type-caption); }
+      .x-intro__feats li { font: var(--type-small); }
+      .x-intro #welcomeDone { position: sticky; bottom: 0; z-index: 2; box-shadow: 0 -14px 24px 6px #111019, 0 6px 24px rgb(194 51 143 / 0.35); }
+      @media (max-width: 599px) {
+        .x-intro__in { gap: 12px; padding: 18px 16px 16px; }
+        .x-intro__in h2 { font-size: 24px; }
+        .x-cards { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+        .x-cardx { grid-template-columns: 44px minmax(0, 1fr); gap: 4px 14px; padding: 14px 16px; }
+        .x-cardx__ic { grid-row: span 2; }
+        .x-soonpill { grid-column: 2; margin-top: 2px; }
+        .x-studio > summary.x-studio__head { padding: 14px 14px 14px 16px; }
+        .x-studio__body { padding: 0 14px 18px; }
+      }
+      /* ===== v3: reduced motion ===== */
+      @media (prefers-reduced-motion: reduce) {
+        .x-bg::before, .x-orb, .x-btn--primary::after, .x-intro[open], .x-studio__panel:not([hidden]), .is-rip::before { animation: none; }
+        .x-btn, .x-preset, .x-tab, .x-cardx { transition: none; }
+        .x-cardx:hover { transform: none; }
+      }
     </style>
   </head>
   <body>
+    <div class="x-bg" aria-hidden="true"><span class="x-orb x-orb--1"></span><span class="x-orb x-orb--2"></span><span class="x-orb x-orb--3"></span><span class="x-orb x-orb--4"></span></div>
     <div class="page" id="top">
+      <header class="x-head" id="sitehead">
+        <a class="x-head__brand" href="#top" aria-label="Long to Shorts Clipper"><span class="x-head__logo" aria-hidden="true">✂️</span><span class="x-head__name">Long to Shorts</span></a>
+        <nav class="x-head__nav" aria-label="Site">
+          <a href="#tool" data-i18n="nTool">Tool</a>
+          <a href="#boost" data-studio-link data-i18n="nStudio">Clip Studio</a>
+          <a href="#faq" data-i18n="nFaq">FAQ</a>
+          <a href="#about" data-i18n="nAbout">About</a>
+          <a href="#contact" data-i18n="nContact">Contact</a>
+        </nav>
+      </header>
       <main class="main">
-        <div class="x-app">
+        <div class="x-app" id="tool">
           <div class="x-top">
             <div class="x-top__row"><h1 data-i18n="title">Long to Shorts</h1><div class="x-top__acts"><div class="x-seg x-lang" role="radiogroup" aria-label="Language / भाषा"><input type="radio" name="uilang" id="langEn" value="en" checked /><label for="langEn" lang="en">EN</label><input type="radio" name="uilang" id="langHi" value="hi" /><label for="langHi" lang="hi">हिंदी</label></div><button class="x-btn x-snd" type="button" id="uisnd" aria-pressed="true" aria-label="UI sounds on" title="UI sounds">🔊</button></div></div>
             <p data-i18n="tagline">Turn one long video into short vertical clips of 30 to 60 seconds, right in your browser.</p>
@@ -508,9 +682,18 @@
               </div>
             </div>
 
-            <details class="x-boost" id="boost">
-              <summary data-i18n="boost">⚡ Boost</summary>
-              <div class="x-boost__body">
+            <details class="x-boost x-studio" id="boost" open>
+              <summary class="x-studio__head"><span class="x-studio__titles"><span class="x-studio__title" data-i18n="studio">🎬 Clip Studio</span><span class="x-studio__subt" data-i18n="studioSub">Make every clip catchy: hook, style, music &amp; export</span></span></summary>
+              <div class="x-boost__body x-studio__body">
+                <div class="x-tabs" role="tablist" id="studioTabs" aria-label="Clip Studio">
+                  <button class="x-tab" type="button" role="tab" id="stab-hook" aria-controls="studio-hook" aria-selected="true" tabindex="0" data-i18n="tabHook">🪝 Hook Title</button>
+                  <button class="x-tab" type="button" role="tab" id="stab-look" aria-controls="studio-look" aria-selected="false" tabindex="-1" data-i18n="tabLook">✨ Look &amp; Effects</button>
+                  <button class="x-tab" type="button" role="tab" id="stab-loop" aria-controls="studio-loop" aria-selected="false" tabindex="-1" data-i18n="tabLoop">🔁 Seamless Loop</button>
+                  <button class="x-tab" type="button" role="tab" id="stab-music" aria-controls="studio-music" aria-selected="false" tabindex="-1" data-i18n="tabMusic">🎵 Music</button>
+                  <button class="x-tab" type="button" role="tab" id="stab-export" aria-controls="studio-export" aria-selected="false" tabindex="-1" data-i18n="tabExport">📦 Export</button>
+                </div>
+                <div class="x-studio__panel" id="studio-hook" role="tabpanel" aria-labelledby="stab-hook">
+                  <p class="x-studio__hint" data-i18n="gHookH">A short line on screen in the first seconds that makes people stay.</p>
                 <div class="x-field">
                   <label class="x-label" for="bhook" data-i18n="hook">Hook title</label>
                   <div class="x-boost__row">
@@ -564,19 +747,10 @@
                   <label class="x-label" for="hanim" data-i18n="anim">Animation</label>
                   <select class="x-input" id="hanim"><option value="pop" data-i18n="aPop">Pop</option><option value="fade" data-i18n="aFade">Fade</option><option value="slide" data-i18n="aSlide">Slide down</option><option value="none" data-i18n="aNone">None</option></select>
                 </div>
-                <div class="x-field">
-                  <label class="x-label" for="bsave" data-i18n="saveAs">Save as</label>
-                  <select class="x-input" id="bsave"><option value="mp4" data-i18n="mp4o">MP4 (best for phones)</option><option value="webm">WebM</option></select>
                 </div>
-                <div class="x-field">
-                  <label class="x-label" for="bengine" data-i18n="engine">Render engine</label>
-                  <select class="x-input" id="bengine"><option value="fast" data-i18n="eFast">Fast (recommended)</option><option value="rec" data-i18n="eRec">Compatibility (recording)</option></select>
-                  <p class="x-hint" data-i18n="engineH">Fast renders faster than real time and always saves MP4. Compatibility records in real time.</p>
-                </div>
-                <div class="x-field">
-                  <label class="x-label" for="bquality" data-i18n="quality">Quality</label>
-                  <select class="x-input" id="bquality"><option value="12000000" data-i18n="qHi">High, 12 Mbps</option><option value="8000000" data-i18n="qMed">Medium, 8 Mbps</option><option value="5000000" data-i18n="qLo">Small, 5 Mbps</option></select>
-                </div>
+                <div class="x-studio__panel" id="studio-look" role="tabpanel" aria-labelledby="stab-look" hidden>
+                  <p class="x-studio__hint" data-i18n="gLookH">Extra polish drawn into every clip.</p>
+                  <h3 class="x-studio__sub" data-i18n="shLook">Look</h3>
                 <label class="x-switch"><span class="x-label" data-i18n="pbar">Progress bar</span><input type="checkbox" role="switch" id="bpb" checked /></label>
                 <div class="x-boost__row">
                   <select class="x-input" id="bpbpos" aria-label="Progress bar position"><option value="bottom" data-i18n="bottom">Bottom</option><option value="top" data-i18n="top">Top</option></select>
@@ -584,6 +758,8 @@
                 </div>
                 <label class="x-switch"><span class="x-label" data-i18n="blur">Blur background fill</span><input type="checkbox" role="switch" id="bblur" /></label>
                 <p class="x-hint" data-i18n="blurH">Blur fills the 9:16 frame around a video kept in its original shape.</p>
+                <label class="x-switch"><span class="x-label" data-i18n="emoji">Emoji + keyword captions</span><input type="checkbox" role="switch" id="bemoji" /></label>
+                  <h3 class="x-studio__sub" data-i18n="shMotion">Motion &amp; sound</h3>
                 <label class="x-switch"><span class="x-label" data-i18n="zoom">Auto zoom punch-ins</span><input type="checkbox" role="switch" id="bzoom" /></label>
                 <div class="x-field">
                   <label class="x-label" for="bzs" data-i18n="zoomS">Zoom strength: <span id="bzsv">1.15</span>×</label>
@@ -596,29 +772,7 @@
                   <button class="x-btn" type="button" id="bsfxt" data-i18n="test">Test</button>
                 </div>
                 <p class="x-hint" data-i18n="sfxH">Whoosh on the hook, boom or pop on each zoom. Recorded into the clip.</p>
-                <fieldset class="x-field x-mus" id="bmus">
-                  <legend class="x-label" data-i18n="music">Background music</legend>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="off" checked /><span><span data-i18n="mOff">Off</span></span></label></div>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="lofi" /><span><span data-i18n="mLofi">Lo-fi Chill</span><small>80 BPM · D minor</small></span></label><button class="x-btn" type="button" data-mprev="lofi" data-i18n="mPrev">▶ Preview</button></div>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="hype" /><span><span data-i18n="mHype">Hype Beat</span><small>128 BPM · C♯ minor</small></span></label><button class="x-btn" type="button" data-mprev="hype" data-i18n="mPrev">▶ Preview</button></div>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="cine" /><span><span data-i18n="mCine">Cinematic</span><small>90 BPM · A minor</small></span></label><button class="x-btn" type="button" data-mprev="cine" data-i18n="mPrev">▶ Preview</button></div>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="pop" /><span><span data-i18n="mPop">Upbeat Pop</span><small>115 BPM · G major</small></span></label><button class="x-btn" type="button" data-mprev="pop" data-i18n="mPrev">▶ Preview</button></div>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="susp" /><span><span data-i18n="mSusp">Suspense</span><small>70 BPM · E Phrygian</small></span></label><button class="x-btn" type="button" data-mprev="susp" data-i18n="mPrev">▶ Preview</button></div>
-                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="up" /><span><span data-i18n="mUp">Upload your own</span><small id="bmusn" data-i18n="mUpH">MP3, M4A, WAV or OGG</small></span></label><button class="x-btn" type="button" id="bmusc" data-i18n="mChoose">Choose file</button><button class="x-btn" type="button" data-mprev="up" id="bmusp" disabled data-i18n="mPrev">▶ Preview</button></div>
-                  <input class="x-sr" type="file" id="bmusf" accept="audio/*" aria-label="Music file" />
-                </fieldset>
-                <div class="x-field">
-                  <label class="x-label" for="bmusv" data-i18n="mvol">Music volume: <span id="bmusvv">25</span>%</label>
-                  <input class="x-range" type="range" id="bmusv" min="0" max="100" step="5" value="25" />
-                </div>
-                <label class="x-switch"><span class="x-label" data-i18n="duck">Auto-duck under speech</span><input type="checkbox" role="switch" id="bduck" checked /></label>
-                <p class="x-hint" data-i18n="duckH">Music drops to 30% while someone speaks, then comes back. Fades in over 0.5 s and out over 1 s. Previews are never recorded.</p>
-                <div class="x-field">
-                  <label class="x-label" for="uivol" data-i18n="uivol">App sound volume: <span id="uivolv">40</span>%</label>
-                  <input class="x-range" type="range" id="uivol" min="0" max="100" step="5" value="40" />
-                  <p class="x-hint" data-i18n="uivolH">Taps and chimes while you work. Never recorded into clips.</p>
-                </div>
-                <label class="x-switch"><span class="x-label" data-i18n="emoji">Emoji + keyword captions</span><input type="checkbox" role="switch" id="bemoji" /></label>
+                  <h3 class="x-studio__sub" data-i18n="shSmart">Smart edit</h3>
                 <div class="x-field">
                   <label class="x-label" for="mtop" data-i18n="mtop">Best moments to find (10-30)</label>
                   <div class="x-boost__row">
@@ -639,11 +793,62 @@
                   <label class="x-label" for="bgap" data-i18n="gap">Minimum silence to cut: <span id="bgapv">0.6</span>s</label>
                   <input class="x-range" type="range" id="bgap" min="0.4" max="2" step="0.1" value="0.6" />
                 </div>
+                </div>
+                <div class="x-studio__panel" id="studio-loop" role="tabpanel" aria-labelledby="stab-loop" hidden>
+                  <p class="x-studio__hint" data-i18n="gLoopH">Loops keep people watching again and again.</p>
                 <label class="x-switch"><span class="x-label" data-i18n="loop">Seamless loop</span><input type="checkbox" role="switch" id="bloop" /></label>
                 <div class="x-field">
                   <label class="x-label" for="bloopn" data-i18n="xfade">Crossfade length: <span id="bloopnv">0.6</span>s</label>
                   <input class="x-range" type="range" id="bloopn" min="0.3" max="1.5" step="0.1" value="0.6" />
                   <p class="x-hint" data-i18n="loopH">The ending fades into the opening frames and sound, so the clip flows straight back to its start on replay.</p>
+                </div>
+                </div>
+                <div class="x-studio__panel" id="studio-music" role="tabpanel" aria-labelledby="stab-music" hidden>
+                  <p class="x-studio__hint" data-i18n="gMusicH">Free built-in tracks or your own file, mixed under your voice.</p>
+                <fieldset class="x-field x-mus" id="bmus">
+                  <legend class="x-label" data-i18n="music">Background music</legend>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="off" checked /><span><span data-i18n="mOff">Off</span></span></label></div>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="lofi" /><span><span data-i18n="mLofi">Lo-fi Chill</span><small>80 BPM · D minor</small></span></label><button class="x-btn" type="button" data-mprev="lofi" data-i18n="mPrev">▶ Preview</button></div>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="hype" /><span><span data-i18n="mHype">Hype Beat</span><small>128 BPM · C♯ minor</small></span></label><button class="x-btn" type="button" data-mprev="hype" data-i18n="mPrev">▶ Preview</button></div>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="cine" /><span><span data-i18n="mCine">Cinematic</span><small>90 BPM · A minor</small></span></label><button class="x-btn" type="button" data-mprev="cine" data-i18n="mPrev">▶ Preview</button></div>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="pop" /><span><span data-i18n="mPop">Upbeat Pop</span><small>115 BPM · G major</small></span></label><button class="x-btn" type="button" data-mprev="pop" data-i18n="mPrev">▶ Preview</button></div>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="susp" /><span><span data-i18n="mSusp">Suspense</span><small>70 BPM · E Phrygian</small></span></label><button class="x-btn" type="button" data-mprev="susp" data-i18n="mPrev">▶ Preview</button></div>
+                  <div class="x-mus__row"><label><input type="radio" name="bmus" value="up" /><span><span data-i18n="mUp">Upload your own</span><small id="bmusn" data-i18n="mUpH">MP3, M4A, WAV or OGG</small></span></label><button class="x-btn" type="button" id="bmusc" data-i18n="mChoose">Choose file</button><button class="x-btn" type="button" data-mprev="up" id="bmusp" disabled data-i18n="mPrev">▶ Preview</button></div>
+                  <input class="x-sr" type="file" id="bmusf" accept="audio/*" aria-label="Music file" />
+                </fieldset>
+                <div class="x-field">
+                  <label class="x-label" for="bmusv" data-i18n="mvol">Music volume: <span id="bmusvv">25</span>%</label>
+                  <input class="x-range" type="range" id="bmusv" min="0" max="100" step="5" value="25" />
+                </div>
+                <label class="x-switch"><span class="x-label" data-i18n="duck">Auto-duck under speech</span><input type="checkbox" role="switch" id="bduck" checked /></label>
+                <p class="x-hint" data-i18n="duckH">Music drops to 30% while someone speaks, then comes back. Fades in over 0.5 s and out over 1 s. Previews are never recorded.</p>
+                  <h3 class="x-studio__sub" data-i18n="shApp">App sounds</h3>
+                <div class="x-field">
+                  <label class="x-label" for="uivol" data-i18n="uivol">App sound volume: <span id="uivolv">40</span>%</label>
+                  <input class="x-range" type="range" id="uivol" min="0" max="100" step="5" value="40" />
+                  <p class="x-hint" data-i18n="uivolH">Taps and chimes while you work. Never recorded into clips.</p>
+                </div>
+                </div>
+                <div class="x-studio__panel" id="studio-export" role="tabpanel" aria-labelledby="stab-export" hidden>
+                  <p class="x-studio__hint" data-i18n="gExportH">How your clips are rendered and saved.</p>
+                <div class="x-field">
+                  <label class="x-label" for="bsave" data-i18n="saveAs">Save as</label>
+                  <select class="x-input" id="bsave"><option value="mp4" data-i18n="mp4o">MP4 (best for phones)</option><option value="webm">WebM</option></select>
+                </div>
+                <div class="x-field">
+                  <label class="x-label" for="bengine" data-i18n="engine">Render engine</label>
+                  <select class="x-input" id="bengine"><option value="fast" data-i18n="eFast">Fast (recommended)</option><option value="rec" data-i18n="eRec">Compatibility (recording)</option></select>
+                  <p class="x-hint" data-i18n="engineH">Fast renders faster than real time and always saves MP4. Compatibility records in real time.</p>
+                </div>
+                <div class="x-field">
+                  <label class="x-label" for="bquality" data-i18n="quality">Quality</label>
+                  <select class="x-input" id="bquality"><option value="12000000" data-i18n="qHi">High, 12 Mbps</option><option value="8000000" data-i18n="qMed">Medium, 8 Mbps</option><option value="5000000" data-i18n="qLo">Small, 5 Mbps</option></select>
+                </div>
+                <div class="x-field">
+                  <label class="x-label" for="bres" data-i18n="res">Resolution</label>
+                  <select class="x-input" id="bres"><option value="1080" data-i18n="r1080">Full HD (1080p)</option><option value="720" data-i18n="r720">720p, lighter for phones</option></select>
+                  <p class="x-hint" data-i18n="resH">720p renders faster and uses less memory. It is picked for you on phones with 4 GB of memory or less.</p>
+                </div>
                 </div>
               </div>
             </details>
@@ -664,8 +869,8 @@
               <p data-i18n="rtP">Export runs in real time: 100 clips of 30s ≈ 50 minutes. Keep this tab open and in front.</p>
             </div>
             <div class="x-alert x-hidden" id="hiddenwarn" role="alert">
-              <strong data-i18n="hidT">This tab was hidden</strong>
-              <p data-i18n="hidP">Browsers slow down hidden tabs, so recording may stall. Keep this tab in front until the queue finishes.</p>
+              <strong data-i18n="hidT">Keep this tab open while rendering</strong>
+              <p data-i18n="hidP">Rendering pauses while this tab is hidden and carries on when you come back. Keep this tab open and in front until the queue finishes.</p>
             </div>
 
             <button class="x-btn x-btn--primary x-btn--block" type="button" id="makeAll">Make all clips</button>
@@ -698,8 +903,87 @@
           </section>
         </div>
       </main>
-      <footer class="foot">
-        <p data-i18n="rights">Only use videos you own or have rights to.</p>
+      <div class="x-more">
+        <section class="x-sec" id="soon" aria-labelledby="soonh">
+          <div class="x-sec__head">
+            <p class="x-kicker" data-i18n="soonK">Roadmap</p>
+            <h2 id="soonh" data-i18n="soonT">Coming soon</h2>
+            <p class="x-sec__lead" data-i18n="soonL">We are building these next. Tell us on Instagram which one you want first.</p>
+          </div>
+          <ul class="x-cards">
+            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">📲</span><h3 data-i18n="c1T">Install as app (PWA)</h3><p data-i18n="c1P">Add Long to Shorts to your home screen and open it like an app, even offline.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
+            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">🚀</span><h3 data-i18n="c2T">Share to Instagram &amp; YouTube</h3><p data-i18n="c2P">Send finished clips straight to Reels and Shorts from the clip list.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
+            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">💾</span><h3 data-i18n="c3T">Saved presets &amp; recent projects</h3><p data-i18n="c3P">Save your favourite style and pick up where you left off.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
+            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">💡</span><h3 data-i18n="c4T">Daily trending hooks</h3><p data-i18n="c4P">Fresh hook ideas every day for gaming, podcasts, motivation and stories.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
+            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">🎵</span><h3 data-i18n="c5T">More music tracks</h3><p data-i18n="c5P">More moods and beats for your clips, all free to use.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
+          </ul>
+        </section>
+
+        <section class="x-sec" id="about" aria-labelledby="abouth">
+          <div class="x-sec__head">
+            <p class="x-kicker" data-i18n="aboutK">About us</p>
+            <h2 id="abouth" data-i18n="aboutT">Made in India, for Indian creators</h2>
+          </div>
+          <div class="x-about">
+            <div class="x-about__text">
+              <p data-i18n="aboutP1">Long to Shorts Clipper is a free tool by ADYVOLT (Aditya), built for Indian creators. Upload one long video and get many vertical Shorts and Reels with captions in Hindi, English or Hinglish, hook titles and music.</p>
+              <p data-i18n="aboutP2">Everything runs inside your browser. Your videos never leave your device: nothing is uploaded to a server.</p>
+            </div>
+            <ul class="x-facts">
+              <li><span aria-hidden="true">🆓</span><span data-i18n="fact1">100% free, no signup, no watermark</span></li>
+              <li><span aria-hidden="true">🇮🇳</span><span data-i18n="fact2">Hindi, English and Hinglish captions</span></li>
+              <li><span aria-hidden="true">🔒</span><span data-i18n="fact3">Private by design: runs on your device</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="x-sec" id="faq" aria-labelledby="faqh">
+          <div class="x-sec__head">
+            <p class="x-kicker" data-i18n="faqK">FAQ</p>
+            <h2 id="faqh" data-i18n="faqT">Questions, answered</h2>
+          </div>
+          <div class="x-faq">
+            <details class="x-qa"><summary data-i18n="q1">Is it really free?</summary><p data-i18n="a1">Yes. Every feature is free to use. There is no signup, no paid plan and no hidden limit.</p></details>
+            <details class="x-qa"><summary data-i18n="q2">Are my videos uploaded anywhere?</summary><p data-i18n="a2">No. Your video is processed on your own device, inside the browser. Nothing is uploaded. Auto captions download a speech model once (about 80 to 150 MB), and your audio still stays on your device.</p></details>
+            <details class="x-qa"><summary data-i18n="q3">Which browser works best?</summary><p data-i18n="a3">Chrome on a desktop computer or an Android phone works best. Edge works too. Some other browsers can't record or export video yet.</p></details>
+            <details class="x-qa"><summary data-i18n="q4">Which video formats are supported?</summary><p data-i18n="a4">MP4 and WebM work best, and MOV works in most browsers. Clips save as MP4 (best for phones) or WebM.</p></details>
+            <details class="x-qa"><summary data-i18n="q5">Can it make Hindi captions?</summary><p data-i18n="a5">Yes. In Style, choose Auto captions and pick Hindi. For Hinglish in Roman letters, pick English. You can also type captions or load an SRT/VTT file.</p></details>
+            <details class="x-qa"><summary data-i18n="q6">Why is export slow on my phone?</summary><p data-i18n="a6">Every clip is rendered on your device, and phones have less power than computers. Use the Fast render engine, pick Medium or Small quality, and keep this tab open and in front until it finishes.</p></details>
+            <details class="x-qa"><summary data-i18n="q7">Is there a watermark?</summary><p data-i18n="a7">No. Your clips never get a watermark.</p></details>
+            <details class="x-qa"><summary data-i18n="q8">How do I contact you or report a problem?</summary><p><span data-i18n="a8a">Send a DM on Instagram to</span> <a href="https://www.instagram.com/alex_official._0/" target="_blank" rel="noopener">@alex_official._0</a><span data-i18n="a8b">. Suggestions are welcome too.</span></p></details>
+          </div>
+        </section>
+
+        <section class="x-sec" id="contact" aria-labelledby="contacth">
+          <div class="x-contact">
+            <div>
+              <p class="x-kicker" data-i18n="contactK">Contact</p>
+              <h2 id="contacth" data-i18n="contactT">Say hi on Instagram</h2>
+              <p class="x-sec__lead" data-i18n="contactL">Suggestions, bugs or collab ideas: send a DM and we'll get back to you.</p>
+            </div>
+            <a class="x-btn x-btn--primary x-btn--ig" href="https://www.instagram.com/alex_official._0/" target="_blank" rel="noopener"><span aria-hidden="true">📸</span>@alex_official._0</a>
+          </div>
+        </section>
+      </div>
+      <footer class="foot x-foot">
+        <div class="x-foot__brand">
+          <strong>✂️ Long to Shorts Clipper</strong>
+          <p data-i18n="fTag">Free long video to Shorts &amp; Reels maker by ADYVOLT.</p>
+        </div>
+        <nav aria-label="Footer">
+          <a href="#tool" data-i18n="nTool">Tool</a>
+          <a href="#boost" data-studio-link data-i18n="nStudio">Clip Studio</a>
+          <a href="#soon" data-i18n="nSoon">Coming soon</a>
+          <a href="#about" data-i18n="nAbout">About</a>
+          <a href="#faq" data-i18n="nFaq">FAQ</a>
+          <a href="#contact" data-i18n="nContact">Contact</a>
+          <a href="https://www.instagram.com/alex_official._0/" target="_blank" rel="noopener">Instagram</a>
+        </nav>
+        <div class="x-foot__base">
+          <p data-i18n="rights">Only use videos you own or have rights to.</p>
+          <p>© 2026 Long to Shorts Clipper · ADYVOLT. <span data-i18n="fRights">All rights reserved.</span></p>
+          <div><button class="x-linkbtn" type="button" id="introOpen" data-i18n="introAgain">Show intro</button></div>
+        </div>
         <a class="badge" href="https://hark.com/" target="_blank" rel="noopener"><span class="hark-mark"></span><span>built by hark</span></a>
       </footer>
     </div>
@@ -709,11 +993,32 @@
     <video id="stylev" class="x-offscreen" playsinline muted preload="auto" aria-hidden="true" tabindex="-1"></video>
     <video id="probev" class="x-offscreen" playsinline muted preload="metadata" aria-hidden="true" tabindex="-1"></video>
 
-    <dialog class="x-modal" id="welcome" aria-labelledby="welcomeh">
-      <div class="x-modal__in">
-        <h2 id="welcomeh" data-i18n="wT">Welcome! 👋</h2>
-        <p><span data-i18n="w1">This is a free tool for everyone. The tool is in its testing phase, and more tools are coming in the future. For any suggestions, support or problems, contact us on Instagram at</span> <a href="https://www.instagram.com/alex_official._0/" target="_blank" rel="noopener">@alex_official._0</a> <span data-i18n="w2">in DM. Thanks for coming, and enjoy!</span></p>
-        <button class="x-btn x-btn--primary x-btn--block" type="button" id="welcomeDone" data-i18n="done">Done</button>
+    <dialog class="x-modal x-intro" id="welcome" aria-labelledby="welcomeh">
+      <div class="x-modal__in x-intro__in">
+        <button class="x-intro__x" type="button" id="introX" aria-label="Close">✕</button>
+        <p class="x-kicker" data-i18n="iKick">Free · On-device · No watermark</p>
+        <h2 id="welcomeh" data-i18n="iTitle">Long video in, many Shorts out ✂️</h2>
+        <p class="x-intro__lead" data-i18n="iLead">Drop one long video and get many ready-to-post Shorts and Reels.</p>
+        <ul class="x-intro__feats">
+          <li data-i18n="iF1">💬 Auto captions in Hindi, English &amp; Hinglish</li>
+          <li data-i18n="iF2">🪝 Hook titles, effects &amp; background music</li>
+          <li data-i18n="iF3">🔒 Runs on your device. Nothing is uploaded</li>
+          <li data-i18n="iF4">🆓 100% free, no signup, no watermark</li>
+        </ul>
+        <div class="x-intro__trend">
+          <div class="x-intro__trendhead"><h3 data-i18n="iTrendT">🔥 Trending now on YouTube &amp; Instagram</h3><span class="x-intro__stamp" data-i18n="iStamp">Trend tips · updated Nov 2026</span></div>
+          <ol class="x-intro__trends">
+            <li><b data-i18n="tr1">POV hooks</b><span data-i18n="tr1d">Open with on-screen text like “POV: you…” in the first second.</span></li>
+            <li><b data-i18n="tr2">“Wait for it” endings</b><span data-i18n="tr2d">Tease the payoff early and land it in the last seconds, so people rewatch.</span></li>
+            <li><b data-i18n="tr3">Podcast clips, big captions</b><span data-i18n="tr3d">One strong opinion, word-by-word captions, face centred.</span></li>
+            <li><b data-i18n="tr4">Gaming clutch moments</b><span data-i18n="tr4d">Jump straight to the clutch or the fail, with zoom punch-ins and a hype beat.</span></li>
+            <li><b data-i18n="tr5">Hinglish storytime</b><span data-i18n="tr5d">A personal story told in Hinglish with bold captions keeps people watching.</span></li>
+            <li><b data-i18n="tr6">Before / after</b><span data-i18n="tr6d">Show the result first, then how you got there. Great for edits, setups and fitness.</span></li>
+          </ol>
+          <p class="x-hint" data-i18n="iTrendNote">Hand-picked formats, not live data. Check what's hot in your own niche too.</p>
+        </div>
+        <p class="x-intro__ig"><span data-i18n="iIg">Tool in testing. Suggestions or problems? DM us on Instagram</span> <a href="https://www.instagram.com/alex_official._0/" target="_blank" rel="noopener">@alex_official._0</a></p>
+        <button class="x-btn x-btn--primary x-btn--block" type="button" id="welcomeDone" data-i18n="iGo">Start clipping</button>
       </div>
     </dialog>
     <div class="x-toast" id="toast" role="status" aria-live="polite"></div>
@@ -764,7 +1069,7 @@
           loop: "सीमलेस लूप", xfade: ["क्रॉसफ़ेड की लंबाई:", "s"], loopH: "आखिरी हिस्सा शुरुआत के फ़्रेम और आवाज़ में घुल जाता है, ताकि रिप्ले पर क्लिप बिना झटके शुरू से चले।",
           nextClips: "आगे: क्लिप्स देखें", backSettings: "सेटिंग्स बदलें", harkNote: "अगर Hark ऐप में डाउनलोड न हो, तो इस पेज को उसके शेयर लिंक से Chrome में खोलें।",
           rtT: "क्लिप्स रियल टाइम में रिकॉर्ड होती हैं", rtP: "एक्सपोर्ट रियल टाइम में चलता है: 30s की 100 क्लिप्स ≈ 50 मिनट। यह टैब खुला और सामने रखें।",
-          hidT: "यह टैब छिप गया था", hidP: "ब्राउज़र छिपे टैब को धीमा कर देते हैं, इसलिए रिकॉर्डिंग अटक सकती है। कतार पूरी होने तक यह टैब सामने रखें।",
+          hidT: "रेंडर के दौरान यह टैब खुला रखें", hidP: "टैब छिपने पर रेंडर रुक जाता है और वापस आने पर फिर चलता है। कतार पूरी होने तक यह टैब खुला और सामने रखें।",
           makeAllN: "सभी {n} क्लिप बनाओ", makeRest: "बाकी {n} क्लिप बनाओ", allMade: "सभी क्लिप बन गईं",
           dlAll: "सभी डाउनलोड करें", dlStop: "डाउनलोड रोकें", download: "डाउनलोड करें", share: "शेयर / सेव करें", openTab: "नए टैब में खोलें",
           makeClip: "क्लिप बनाओ", makeAgain: "फिर से बनाओ", retry: "फिर कोशिश करें", pause: "रोकें", resume: "जारी रखें", postKit: "पोस्ट किट", thumb: "थंबनेल",
@@ -772,7 +1077,55 @@
           tip2: "क्लिप्स बनते समय टैब खुला रखें।", tip3: "आपका वीडियो आपके डिवाइस पर ही रहता है। कुछ भी अपलोड नहीं होता।",
           rights: "सिर्फ़ वही वीडियो इस्तेमाल करें जो आपके हैं या जिनके अधिकार आपके पास हैं।",
           wT: "स्वागत है! 👋", w1: "यह सबके लिए एक फ़्री टूल है। अभी यह टेस्टिंग में है, और आगे और भी टूल्स आने वाले हैं। कोई सुझाव, मदद या दिक्कत हो तो Instagram पर", w2: "को DM करें। आने के लिए शुक्रिया, मज़े करें!",
-          done: "ठीक है", presetApplied: "{p} प्रीसेट लागू हो गया", custom: "कस्टम सेटिंग्स"
+          studio: "🎬 क्लिप स्टूडियो", studioSub: "हर क्लिप को कैची बनाओ: हुक, स्टाइल, म्यूज़िक और एक्सपोर्ट",
+          tabHook: "🪝 हुक टाइटल", tabLook: "✨ लुक और इफ़ेक्ट", tabLoop: "🔁 सीमलेस लूप", tabMusic: "🎵 म्यूज़िक", tabExport: "📦 एक्सपोर्ट",
+          gHookH: "शुरुआती सेकंड में स्क्रीन पर एक छोटी लाइन, जो लोगों को रोक ले।", gLookH: "हर क्लिप में जुड़ने वाली एक्स्ट्रा चमक।",
+          gLoopH: "लूप से लोग क्लिप बार-बार देखते हैं।", gMusicH: "फ़्री बिल्ट-इन ट्रैक या अपनी फ़ाइल, आपकी आवाज़ के नीचे मिक्स।",
+          gExportH: "आपकी क्लिप्स कैसे बनें और सेव हों।", shLook: "लुक", shMotion: "मोशन और साउंड", shSmart: "स्मार्ट एडिट", shApp: "ऐप की आवाज़ें",
+          studioNeed: "पहले वीडियो अपलोड करें। क्लिप स्टूडियो स्टेप 3 (स्टाइल) में खुलता है।",
+          nTool: "टूल", nStudio: "क्लिप स्टूडियो", nFaq: "सवाल-जवाब", nAbout: "हमारे बारे में", nContact: "संपर्क", nSoon: "जल्द आ रहा है",
+          iKick: "फ़्री · डिवाइस पर · कोई वॉटरमार्क नहीं", iTitle: "एक लंबा वीडियो, ढेर सारे शॉर्ट्स ✂️",
+          iLead: "एक लंबा वीडियो डालो और पोस्ट करने लायक कई शॉर्ट्स और रील्स पाओ।",
+          iF1: "💬 हिंदी, इंग्लिश और हिंग्लिश में ऑटो कैप्शन", iF2: "🪝 हुक टाइटल, इफ़ेक्ट और बैकग्राउंड म्यूज़िक",
+          iF3: "🔒 आपके डिवाइस पर चलता है। कुछ भी अपलोड नहीं होता", iF4: "🆓 100% फ़्री, साइनअप नहीं, वॉटरमार्क नहीं",
+          iTrendT: "🔥 YouTube और Instagram पर अभी ट्रेंडिंग", iStamp: "ट्रेंड टिप्स · नवंबर 2026 अपडेट",
+          tr1: "POV हुक", tr1d: "पहले ही सेकंड में “POV: जब आप…” जैसा टेक्स्ट दिखाओ।",
+          tr2: "“वेट फ़ॉर इट” एंडिंग", tr2d: "शुरू में झलक दो और आखिरी सेकंड में धमाका, ताकि लोग फिर से देखें।",
+          tr3: "पॉडकास्ट क्लिप, बड़े कैप्शन", tr3d: "एक दमदार बात, शब्द-दर-शब्द कैप्शन, चेहरा बीच में।",
+          tr4: "गेमिंग क्लच मोमेंट", tr4d: "सीधे क्लच या फ़ेल पर जाओ, ज़ूम पंच-इन और हाइप बीट के साथ।",
+          tr5: "हिंग्लिश स्टोरीटाइम", tr5d: "हिंग्लिश में सुनाई गई अपनी कहानी और बोल्ड कैप्शन लोगों को रोके रखते हैं।",
+          tr6: "बिफ़ोर / आफ़्टर", tr6d: "पहले नतीजा दिखाओ, फिर कैसे बना। एडिट, सेटअप और फ़िटनेस के लिए बढ़िया।",
+          iTrendNote: "चुने हुए फ़ॉर्मेट, लाइव डेटा नहीं। अपनी कैटेगरी में क्या चल रहा है, वो भी देखें।",
+          iIg: "टूल अभी टेस्टिंग में है। कोई सुझाव या दिक्कत? Instagram पर DM करें", iGo: "क्लिप बनाना शुरू करें",
+          soonK: "आगे क्या", soonT: "जल्द आ रहा है", soonL: "हम आगे ये बना रहे हैं। Instagram पर बताएँ कि आपको सबसे पहले कौन-सा चाहिए।", soonPill: "जल्द",
+          c1T: "ऐप की तरह इंस्टॉल (PWA)", c1P: "Long to Shorts को होम स्क्रीन पर जोड़ें और ऐप की तरह खोलें, ऑफ़लाइन भी।",
+          c2T: "Instagram और YouTube पर शेयर", c2P: "तैयार क्लिप्स सीधे क्लिप लिस्ट से रील्स और शॉर्ट्स पर भेजें।",
+          c3T: "सेव प्रीसेट और हाल के प्रोजेक्ट", c3P: "अपना पसंदीदा स्टाइल सेव करें और जहाँ छोड़ा था वहीं से शुरू करें।",
+          c4T: "रोज़ के ट्रेंडिंग हुक", c4P: "गेमिंग, पॉडकास्ट, मोटिवेशन और कहानियों के लिए हर दिन नए हुक आइडिया।",
+          c5T: "और म्यूज़िक ट्रैक", c5P: "आपकी क्लिप्स के लिए और मूड और बीट्स, सब फ़्री।",
+          aboutK: "हमारे बारे में", aboutT: "भारत में बना, भारतीय क्रिएटर्स के लिए",
+          aboutP1: "Long to Shorts Clipper, ADYVOLT (आदित्य) का बनाया एक फ़्री टूल है, भारतीय क्रिएटर्स के लिए। एक लंबा वीडियो अपलोड करें और हिंदी, इंग्लिश या हिंग्लिश कैप्शन, हुक टाइटल और म्यूज़िक के साथ कई वर्टिकल शॉर्ट्स और रील्स पाएँ।",
+          aboutP2: "सब कुछ आपके ब्राउज़र में चलता है। आपके वीडियो आपके डिवाइस से बाहर नहीं जाते: किसी सर्वर पर कुछ भी अपलोड नहीं होता।",
+          fact1: "100% फ़्री, साइनअप नहीं, वॉटरमार्क नहीं", fact2: "हिंदी, इंग्लिश और हिंग्लिश कैप्शन", fact3: "प्राइवेसी पहले: आपके डिवाइस पर चलता है",
+          faqK: "सवाल-जवाब", faqT: "आपके सवाल, हमारे जवाब",
+          q1: "क्या यह सच में फ़्री है?", a1: "हाँ। हर फ़ीचर फ़्री है। न साइनअप, न पेड प्लान, न कोई छुपी लिमिट।",
+          q2: "क्या मेरे वीडियो कहीं अपलोड होते हैं?", a2: "नहीं। आपका वीडियो आपके अपने डिवाइस पर, ब्राउज़र के अंदर ही प्रोसेस होता है। कुछ भी अपलोड नहीं होता। ऑटो कैप्शन एक बार स्पीच मॉडल (लगभग 80 से 150 MB) डाउनलोड करते हैं, फिर भी आपकी आवाज़ आपके डिवाइस पर ही रहती है।",
+          q3: "कौन-सा ब्राउज़र सबसे अच्छा है?", a3: "डेस्कटॉप या Android फ़ोन पर Chrome सबसे अच्छा चलता है। Edge भी चलता है। कुछ दूसरे ब्राउज़र अभी वीडियो रिकॉर्ड या एक्सपोर्ट नहीं कर पाते।",
+          q4: "कौन-से वीडियो फ़ॉर्मेट चलते हैं?", a4: "MP4 और WebM सबसे अच्छे चलते हैं, MOV ज़्यादातर ब्राउज़र में चलता है। क्लिप्स MP4 (फ़ोन के लिए सबसे अच्छा) या WebM में सेव होती हैं।",
+          q5: "क्या यह हिंदी कैप्शन बना सकता है?", a5: "हाँ। स्टाइल में ऑटो कैप्शन चुनें और हिंदी चुनें। रोमन अक्षरों वाली हिंग्लिश के लिए इंग्लिश चुनें। आप कैप्शन खुद लिख भी सकते हैं या SRT/VTT फ़ाइल लोड कर सकते हैं।",
+          q6: "मेरे फ़ोन पर एक्सपोर्ट धीमा क्यों है?", a6: "हर क्लिप आपके डिवाइस पर बनती है, और फ़ोन में कंप्यूटर से कम ताकत होती है। तेज़ रेंडर इंजन चुनें, मीडियम या छोटी क्वालिटी लें, और पूरा होने तक यह टैब खुला और सामने रखें।",
+          q7: "क्या कोई वॉटरमार्क है?", a7: "नहीं। आपकी क्लिप्स पर कभी वॉटरमार्क नहीं लगता।",
+          q8: "आपसे संपर्क या दिक्कत की शिकायत कैसे करें?", a8a: "Instagram पर DM भेजें:", a8b: "। सुझाव भी भेजें।",
+          contactK: "संपर्क", contactT: "Instagram पर हाय बोलें", contactL: "सुझाव, बग या कोलैब आइडिया: DM भेजें, हम जवाब देंगे।",
+          fTag: "ADYVOLT का फ़्री लॉन्ग वीडियो से शॉर्ट्स और रील्स मेकर।", fRights: "सर्वाधिकार सुरक्षित।", introAgain: "इंट्रो फिर दिखाएँ",
+          done: "ठीक है", presetApplied: "{p} प्रीसेट लागू हो गया", custom: "कस्टम सेटिंग्स",
+          res: "रेज़ोल्यूशन", r1080: "फ़ुल HD (1080p)", r720: "720p, फ़ोन के लिए हल्का",
+          resH: "720p तेज़ी से बनता है और कम मेमोरी लेता है। 4 GB या कम मेमोरी वाले फ़ोन पर यह अपने-आप चुना जाता है।",
+          stQueued: "कतार में", stWait: "वीडियो का इंतज़ार…", stCheck: "लंबाई जाँच रहे हैं…", stReady: "तैयार", stPaused: "रुका हुआ",
+          stFail: "फ़ेल – फिर कोशिश पर टैप करें", stRetry: "{e} से फिर कोशिश…", stRender: "रेंडर {p}%", stRecord: "रिकॉर्डिंग {p}%",
+          engFast: "फ़ास्ट", engRec: "कम्पैटिबिलिटी मोड", qProg: "क्लिप {k} / {n} · {p}%", qDone: "{d} तैयार", qFail: "{f} फ़ेल",
+          save: "सेव करें", dlHelp: "डाउनलोड शुरू नहीं हुआ? नीचे दिए विकल्प इस्तेमाल करें।", shareFell: "यहाँ फ़ाइल शेयर नहीं हो सकती, इसलिए डाउनलोड कर दी।",
+          savedAs: "{f} सेव हो गई", cancelling: "रद्द कर रहे हैं…", copied: "कॉपी हो गया ✓"
         };
         var lang = "en";
         function fill(s, v) { return v ? String(s).replace(/\{(\w+)\}/g, function (_, k) { return v[k] != null ? v[k] : ""; }) : s; }
@@ -2577,7 +2930,7 @@
             btn.className = "x-btn";
             TSET(btn, "makeClip", "Make clip");
             btn.setAttribute("aria-label", "Make Part " + seg.n);
-            btn.addEventListener("click", function (e) { e.stopPropagation(); makeQueue([i]); });
+            btn.dataset.act = "make";
             var out = document.createElement("div");
             out.className = "x-clip__out x-hidden";
             acts.appendChild(btn);
@@ -2589,12 +2942,8 @@
             tnB.setAttribute("aria-label", "Thumbnail for Part " + seg.n); tnB.setAttribute("aria-expanded", "false");
             acts.appendChild(kitB); acts.appendChild(tnB);
             li.appendChild(c); li.appendChild(info); li.appendChild(acts); li.appendChild(out);
-            kitB.addEventListener("click", function (e) { e.stopPropagation(); togglePanel(seg, "kit", kitB); });
-            tnB.addEventListener("click", function (e) { e.stopPropagation(); togglePanel(seg, "tn", tnB); });
-            li.addEventListener("click", function (e) {
-              if (e.target.closest("a, button, video, .x-kit")) return;
-              if (!seg.blob && !S.busy) makeQueue([i]);
-            });
+            // Clicks on every clip row are handled once, on the #clips list (see clipAction).
+            kitB.dataset.act = "kit"; tnB.dataset.act = "tn"; li.dataset.i = i;
             frag.appendChild(li);
             seg.el = { li: li, thumb: c, status: status, btn: btn, acts: acts, out: out };
           });
@@ -2619,29 +2968,35 @@
           }).catch(function () {});
         }
         function setStatus(seg, kind, p) {
+          if (!seg.el) return;
           var st = seg.el.status;
           if (kind === "rec") {
             var pct = Math.round(p * 100);
             if (!st.firstChild || !st.querySelector(".x-bar")) {
               st.innerHTML = '<span class="chip chip--solid">Recording</span><div class="x-bar"><span></span></div>';
             }
-            st.querySelector(".chip").textContent = (seg.fast ? "Rendering " : "Recording ") + pct + "%";
+            st.querySelector(".chip").textContent = seg.fast ? T("stRender", "Rendering {p}%", { p: pct }) : T("stRecord", "Recording {p}%", { p: pct });
             st.querySelector(".x-bar span").style.width = pct + "%";
           } else if (kind === "done") {
-            st.innerHTML = '<span class="chip chip--solid">Ready</span>';
+            st.innerHTML = '<span class="chip chip--solid"></span>'; st.firstChild.textContent = T("stReady", "Ready");
           } else if (kind === "check") {
-            st.innerHTML = '<span class="chip">Checking length…</span>';
+            st.innerHTML = '<span class="chip"></span>'; st.firstChild.textContent = T("stCheck", "Checking length…");
           } else if (kind === "wait") {
-            st.innerHTML = '<span class="chip">Waiting for video…</span>';
+            st.innerHTML = '<span class="chip"></span>'; st.firstChild.textContent = T("stWait", "Waiting for video…");
           } else if (kind === "queued") {
-            st.innerHTML = '<span class="chip">Queued</span>';
+            st.innerHTML = '<span class="chip"></span>'; st.firstChild.textContent = T("stQueued", "Queued");
+          } else if (kind === "paused") {
+            st.innerHTML = '<span class="chip"></span>'; st.firstChild.textContent = T("stPaused", "Paused");
+          } else if (kind === "retrying") {
+            st.innerHTML = '<span class="chip"></span>';
+            st.firstChild.textContent = T("stRetry", "Retrying with {e}…", { e: p === "fast" ? T("engFast", "Fast") : T("engRec", "Compatibility mode") });
           } else if (kind === "failed") {
-            st.innerHTML = '<span class="x-fail">Failed - retry</span>';
+            st.innerHTML = '<span class="x-fail"></span>'; st.firstChild.textContent = T("stFail", "Failed – tap Retry");
             if (p) { var m = document.createElement("p"); m.className = "x-hint"; m.textContent = p; st.appendChild(m); }
           } else {
             st.innerHTML = "";
           }
-          if (seg.compat && st.firstChild && !st.querySelector(".x-compat")) st.insertAdjacentHTML("beforeend", ' <span class="pill x-compat">Compatibility mode</span>');
+          if (seg.compat && kind !== "failed" && kind !== "retrying" && st.firstChild && !st.querySelector(".x-compat")) st.insertAdjacentHTML("beforeend", ' <span class="pill x-compat">Compatibility mode</span>');
           seg.el.li.classList.toggle("is-failed", kind === "failed");
         }
         function setFailed(seg, reason) {
@@ -2664,19 +3019,19 @@
           (S.segs || []).forEach(function (s) { if (s.el && s.el.dl) s.el.dl.download = clipName(s); });
           if (S.step === 3) drawStylePreview();
         });
+        // Every download gets its own anchor and its own fresh object URL, created inside the tap and revoked a minute later.
         function downloadUrl(url, name) {
           var a = document.createElement("a");
           a.href = url; a.download = name; a.rel = "noopener";
           a.style.display = "none";
-          document.body.appendChild(a); a.click();
-          setTimeout(function () { a.remove(); }, 1000);
+          document.body.appendChild(a);
+          try { a.click(); } finally { setTimeout(function () { a.remove(); }, 1500); }
         }
-        function triggerDownload(seg) { downloadUrl(seg.url, clipName(seg)); }
         function downloadBlob(blob, name) {
           var u = URL.createObjectURL(blob);
-          downloadUrl(u, name);
-          setTimeout(function () { URL.revokeObjectURL(u); }, 60000);
+          try { downloadUrl(u, name); } finally { setTimeout(function () { URL.revokeObjectURL(u); }, 60000); }
         }
+        function triggerDownload(seg) { if (seg.blob) downloadBlob(seg.blob, clipName(seg)); }
 
         /* ---------- per-clip panels: post kit + thumbnail ---------- */
         function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -2690,7 +3045,8 @@
           if (open && p.onOpen) p.onOpen();
         }
         function copyText(text, b) {
-          var done = function () { var t = b.textContent; b.textContent = "Copied ✓"; setTimeout(function () { b.textContent = t; }, 1200); };
+          if (b.__label == null) b.__label = b.textContent;
+          var done = function () { b.textContent = T("copied", "Copied ✓"); clearTimeout(b.__copyT); b.__copyT = setTimeout(function () { b.textContent = b.__label; }, 1200); };
           var legacy = function () {
             var ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
             document.body.appendChild(ta); ta.select();
@@ -2802,11 +3158,11 @@
             l.style.marginBottom = "0"; f.appendChild(l); box.appendChild(f); return f;
           }
           function line(parent, multi, label) {
-            var w = mk("div", "x-kit__line"), inp = el(multi ? "textarea" : "input", "x-input");
+            var w = mk("div", "x-kit__line"), inp = mk(multi ? "textarea" : "input", "x-input");
             if (!multi) inp.type = "text";
             inp.setAttribute("aria-label", label);
             var b = mk("button", "x-btn", "Copy"); b.type = "button"; b.setAttribute("aria-label", "Copy " + label.toLowerCase());
-            b.addEventListener("click", function () { copyText(inp.value, b); });
+            b.dataset.act = "fn"; b.__act = function () { copyText(inp.value, b); };
             w.appendChild(inp); w.appendChild(b); parent.appendChild(w); return inp;
           }
           var tf = field("Title"), titleIn = [line(tf, false, "Title option 1"), line(tf, false, "Title option 2"), line(tf, false, "Title option 3")];
@@ -2821,11 +3177,11 @@
             titleIn.forEach(function (inp, i) { inp.value = k.titles[i] || ""; inp.parentNode.classList.toggle("x-hidden", !k.titles[i]); });
             descIn.value = k.desc; tagIn.value = k.tags;
           }
-          allB.addEventListener("click", function () {
+          allB.dataset.act = "fn"; allB.__act = function () {
             var t = titleIn.map(function (i) { return i.value; }).filter(Boolean)[0] || "";
             copyText(t + "\n\n" + descIn.value + "\n\n" + tagIn.value, allB);
-          });
-          regen.addEventListener("click", function () { st.seed++; render(); });
+          };
+          regen.dataset.act = "fn"; regen.__act = function () { st.seed++; render(); };
           hiC.addEventListener("change", function () { st.hi = hiC.checked; render(); });
           catS.addEventListener("change", function () { st.cat = catS.value; render(); });
           render();
@@ -2936,24 +3292,50 @@
           fmtS.addEventListener("change", function () { st.yt = fmtS.value === "yt"; grab(); render(); });
           [[txt, "text"], [emo, "emoji"], [col, "col"], [outc, "out"]].forEach(function (p) { p[0].addEventListener("input", function () { st[p[1]] = p[0].value.trim(); render(); }); });
           [[ow, "ow"], [sz, "size"], [yy, "y"], [dk, "dark"]].forEach(function (p) { p[0].addEventListener("input", function () { st[p[1]] = +p[0].value; render(); }); });
-          dlB.addEventListener("click", function () {
+          dlB.dataset.act = "fn"; dlB.__act = function () {
             render();
             var name = clipName(seg).replace(/\.\w+$/, "") + "-thumb" + (st.yt ? "-youtube" : "") + ".png";
+            var fail = function () { msg.textContent = "Couldn't make the PNG in this browser."; };
             try {
               cv.toBlob(function (b) {
-                if (!b) { msg.textContent = "Couldn't make the PNG in this browser."; return; }
-                downloadBlob(b, name); msg.textContent = "Saved " + name;
+                if (!b) { fail(); return; }
+                downloadBlob(b, name); msg.textContent = T("savedAs", "Saved {f}", { f: name });
               }, "image/png");
-            } catch (e) { msg.textContent = "Couldn't make the PNG in this browser."; }
-          });
+            } catch (e) { fail(); }
+          };
           render(); grab();
           return box;
         }
-        function setResult(seg, blob, url) {
-          if (seg.url && seg.url !== url) URL.revokeObjectURL(seg.url);
+        /* ---------- render job state ---------- */
+        // Q.state: idle -> running -> cancelling -> idle. endQueue() is the only way back to idle and always runs.
+        var Q = { state: "idle", pending: [], cur: null, analyzing: false };
+        // One attempt = one clip on one engine. The queue's watchdog kills an attempt that stops moving.
+        var JOB = { att: null };
+        var WD = { prep: 45000, idle: 10000, post: 45000 };
+        function petJob() { if (JOB.att && !JOB.att.dead) JOB.att.beat = performance.now(); }
+        function withTimeout(p, ms, msg) {
+          return new Promise(function (res, rej) {
+            var to = setTimeout(function () { rej(new Error(msg || "Timed out.")); }, ms);
+            Promise.resolve(p).then(function (v) { clearTimeout(to); res(v); }, function (e) { clearTimeout(to); rej(e); });
+          });
+        }
+        function lowMem() { var m = navigator.deviceMemory; return !!(m && m <= 4); }
+        // Output size for the encoders: the layout size, scaled down to 720p when chosen (drawing scales with the canvas).
+        function renderSize(format) {
+          var sz = outSize(format);
+          if ((($("bres") || {}).value || "1080") !== "720") return sz;
+          var k = Math.min(1, 720 / Math.min(sz.w, sz.h));
+          return { w: Math.round((sz.w * k) / 2) * 2, h: Math.round((sz.h * k) / 2) * 2 };
+        }
+        function renderBps(size) { return Math.max(2000000, Math.round(qualityBps() * Math.min(1, (size.w * size.h) / (1080 * 1920)))); }
+        if ($("bres") && lowMem()) $("bres").value = "720";
+
+        function setResult(seg, blob) {
+          if (seg.url) URL.revokeObjectURL(seg.url);
           if (seg.el.dl) { seg.el.dl.remove(); seg.el.dl = null; }
           seg.blob = blob;
-          seg.url = url || URL.createObjectURL(blob);
+          // Only for "Open in new tab" and long-press; every Download/Share/Save tap builds its own URL or File from seg.blob.
+          seg.url = URL.createObjectURL(blob);
           seg.failed = false;
           var fname = clipName(seg);
           var out = seg.el.out;
@@ -2963,56 +3345,36 @@
           var help = document.createElement("p");
           help.className = "x-hint x-hidden";
           help.setAttribute("aria-live", "polite");
+          seg.el.help = help;
           var dl = document.createElement("a");
           dl.className = "x-btn x-btn--primary";
           dl.href = seg.url; dl.download = fname; TSET(dl, "download", "Download");
-          dl.addEventListener("click", function () { dl.download = clipName(seg); }, true);
+          dl.dataset.act = "dl";
           dl.setAttribute("aria-label", "Download Part " + seg.n);
-          dl.addEventListener("click", function (e) {
-            try {
-              e.stopPropagation();
-              setTimeout(function () {
-                help.textContent = "Download not starting? Use one of the options below.";
-                show(help, true);
-              }, 600);
-            } catch (err) {
-              help.textContent = "Download not starting? Use one of the options below.";
-              show(help, true);
-            }
-          });
-          var sh = document.createElement("button");
-          sh.type = "button"; sh.className = "x-btn"; TSET(sh, "share", "Share / Save");
-          sh.setAttribute("aria-label", "Share or save Part " + seg.n);
-          var file = null;
-          try { file = new File([blob], fname, { type: blob.type || BLOBTYPE }); } catch (err) { file = null; }
-          var canShare = false;
-          try { canShare = !!(file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })); } catch (err) { canShare = false; }
-          sh.addEventListener("click", function (e) {
-            e.stopPropagation();
-            var fail = function (err) {
-              if (err && err.name === "AbortError") return;
-              help.textContent = "Sharing is blocked here, use the video menu instead.";
-              show(help, true);
-            };
-            try {
-              var nm = clipName(seg);
-              if (file && file.name !== nm) { try { file = new File([blob], nm, { type: blob.type || BLOBTYPE }); } catch (err2) {} }
-              var p = navigator.share({ files: [file], title: nm });
-              if (p && p.catch) p.catch(fail);
-            } catch (err) { fail(err); }
-          });
+          if (navigator.share) {
+            var sh = document.createElement("button");
+            sh.type = "button"; sh.className = "x-btn"; TSET(sh, "share", "Share / Save");
+            sh.dataset.act = "share";
+            sh.setAttribute("aria-label", "Share or save Part " + seg.n);
+            row.appendChild(sh);
+          }
+          if (typeof window.showSaveFilePicker === "function") {
+            var sv = document.createElement("button");
+            sv.type = "button"; sv.className = "x-btn"; TSET(sv, "save", "Save…");
+            sv.dataset.act = "save";
+            sv.setAttribute("aria-label", "Save Part " + seg.n + " to a folder");
+            row.appendChild(sv);
+          }
           var op = document.createElement("a");
           op.className = "x-btn";
           op.href = seg.url; op.target = "_blank"; op.rel = "noopener"; TSET(op, "openTab", "Open in new tab");
+          op.dataset.act = "open";
           op.setAttribute("aria-label", "Open Part " + seg.n + " in a new tab");
-          op.addEventListener("click", function (e) { e.stopPropagation(); });
           var size = document.createElement("span");
           size.className = "x-hint";
           size.textContent = (blob.size / 1048576).toFixed(1) + " MB · ." + extOf(seg) + (seg.lenMsg ? " · " + seg.lenMsg : "");
-          dl.className = "x-btn x-btn--primary";
           seg.el.acts.insertBefore(dl, seg.el.btn);
           seg.el.dl = dl;
-          if (canShare) row.appendChild(sh);
           row.appendChild(op); row.appendChild(size);
           if (seg.loopMade) {
             var lt = document.createElement("span");
@@ -3028,36 +3390,119 @@
           setStatus(seg, "done");
           refreshDone();
         }
+        function clipHelp(seg, text) { var h = seg.el && seg.el.help; if (!h) return; h.textContent = text; show(h, true); }
+        function blobFile(seg) {
+          var type = (seg.blob.type || BLOBTYPE).split(";")[0];
+          try { return new File([seg.blob], clipName(seg), { type: type }); } catch (e) { return null; }
+        }
+        // Download: a fresh anchor + object URL per tap, synchronously inside the tap.
+        function dlClip(seg) {
+          if (!seg.blob) return;
+          downloadBlob(seg.blob, clipName(seg));
+          clearTimeout(seg.helpT);
+          seg.helpT = setTimeout(function () { clipHelp(seg, T("dlHelp", "Download not starting? Use one of the options below.")); }, 1500);
+        }
+        // Share: a fresh File per tap; AbortError (user closed the sheet) is quiet; anything else falls back to a download.
+        function shareClip(seg, b) {
+          if (!seg.blob) return;
+          var file = blobFile(seg), ok = false;
+          try { ok = !!(file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })); } catch (e) { ok = false; }
+          if (!ok) { dlClip(seg); clipHelp(seg, T("shareFell", "Sharing files isn't supported here, so it was downloaded instead.")); return; }
+          holdAct(b, 30000);
+          var p;
+          try { p = navigator.share({ files: [file], title: file.name }); } catch (e) { p = Promise.reject(e); }
+          Promise.resolve(p).then(function () {}, function (err) {
+            if (err && err.name === "AbortError") return;
+            // InvalidStateError = an earlier share sheet never reported back; NotAllowedError = no gesture left.
+            dlClip(seg); clipHelp(seg, T("shareFell", "Sharing files isn't supported here, so it was downloaded instead."));
+          }).then(function () { freeAct(b); });
+        }
+        // Save: a real "Save as" dialog where the browser has one, otherwise a normal download.
+        function saveClip(seg, b) {
+          if (!seg.blob) return;
+          if (typeof window.showSaveFilePicker !== "function") { dlClip(seg); return; }
+          var name = clipName(seg), type = (seg.blob.type || BLOBTYPE).split(";")[0], acc = {}, blob = seg.blob;
+          acc[type] = ["." + extOf(seg)];
+          holdAct(b, 120000);
+          var p;
+          try { p = window.showSaveFilePicker({ suggestedName: name, types: [{ description: "Video", accept: acc }] }); } catch (e) { p = Promise.reject(e); }
+          Promise.resolve(p).then(function (h) { return h.createWritable(); }).then(function (w) {
+            return w.write(blob).then(function () { return w.close(); });
+          }).then(function () { clipHelp(seg, T("savedAs", "Saved {f}", { f: name })); }, function (err) {
+            if (err && err.name === "AbortError") return;
+            dlClip(seg);
+          }).then(function () { freeAct(b); });
+        }
+        // Per-button tap guard: ignores repeat taps while that one button's action runs, and always expires on its own.
+        function holdAct(b, ms) { b.__until = Date.now() + (ms || 800); }
+        function freeAct(b) { b.__until = 0; }
+        function clipAction(e) {
+          var li = e.target.closest && e.target.closest("li.x-clip");
+          if (!li || !$("clips").contains(li)) return;
+          var i = +li.dataset.i, seg = S.segs[i];
+          if (!seg || !seg.el || seg.el.li !== li) return;
+          var b = e.target.closest("[data-act]");
+          if (!b || !li.contains(b)) {
+            // A tap on the row itself makes that clip (or queues it behind the running one).
+            if (e.target.closest("a, button, video, input, select, textarea, label, .x-kit")) return;
+            if (!seg.blob && !unsupported) makeQueue([i]);
+            return;
+          }
+          var act = b.dataset.act;
+          if (act === "open") { if (seg.url) b.href = seg.url; return; } // let the browser open it
+          e.preventDefault();
+          if (b.disabled) return;
+          if (b.__until && Date.now() < b.__until) return;
+          holdAct(b, act === "make" ? 600 : 900);
+          try {
+            if (act === "make") makeQueue([i]);
+            else if (act === "kit" || act === "tn") togglePanel(seg, act, b);
+            else if (act === "dl") dlClip(seg);
+            else if (act === "share") shareClip(seg, b);
+            else if (act === "save") saveClip(seg, b);
+            else if (typeof b.__act === "function") b.__act(e);
+          } catch (err) {
+            freeAct(b);
+            if (window.console) console.warn("Clip action failed:", act, err);
+            if (act === "dl" || act === "share" || act === "save") clipHelp(seg, T("dlHelp", "Download not starting? Use one of the options below."));
+          }
+        }
+        $("clips").addEventListener("click", clipAction);
         function refreshDone() {
           var n = S.segs.filter(function (s) { return s.blob; }).length;
           var f = S.segs.filter(function (s) { return s.failed; }).length;
           $("donecount").textContent = n + " of " + S.segs.length + " ready" + (f ? " · " + f + " failed" : "");
-          $("dlAll").disabled = !n || DLALL.busy;
+          $("dlAll").disabled = !n;
         }
-        var DLALL = { busy: false, stop: false };
+        var DLALL = { busy: false, stop: false, run: 0 };
         $("dlAll").addEventListener("click", function () {
           if (DLALL.busy) { DLALL.stop = true; return; }
-          var list = S.segs.filter(function (s) { return s.blob && s.url; });
+          var list = S.segs.filter(function (s) { return s.blob; });
           if (!list.length) return;
+          var run = ++DLALL.run;
           DLALL.busy = true; DLALL.stop = false;
           var i = 0;
           TSET($("dlAll"), "dlStop", "Stop downloads");
           (function next() {
+            if (run !== DLALL.run) return;
             if (DLALL.stop || i >= list.length) {
               DLALL.busy = false; TSET($("dlAll"), "dlAll", "Download all"); refreshDone();
-              $("cstatus").textContent = DLALL.stop ? "Downloads stopped after " + i + "." : "Sent " + i + " download" + (i === 1 ? "" : "s") + ". If only one arrived, allow multiple downloads for this site.";
+              $("cstatus").textContent = DLALL.stop ? "Downloads stopped after " + i + "." : "Sent " + i + " download" + (i === 1 ? "" : "s") + ". If only one arrived, allow multiple downloads for this site, or use each clip's Download button.";
               return;
             }
             var seg = list[i++];
-            if (seg.url) triggerDownload(seg);
+            try { triggerDownload(seg); } catch (e) {}
             $("cstatus").textContent = "Downloading " + i + " of " + list.length + "…";
-            setTimeout(next, 900);
+            // Browsers drop downloads fired back to back, so space them out.
+            setTimeout(next, 700);
           })();
         });
         function refreshButtons() {
-          S.segs.forEach(function (s) {
-            s.el.btn.disabled = S.busy || unsupported;
-            s.el.li.classList.toggle("is-locked", S.busy || unsupported);
+          S.segs.forEach(function (s, i) {
+            // Only the clip being made (or already waiting in the queue) is locked; the rest stay usable.
+            var held = S.busy && (s === Q.cur || Q.pending.indexOf(i) >= 0);
+            s.el.btn.disabled = unsupported || held;
+            s.el.li.classList.toggle("is-locked", unsupported || held);
           });
           var left = S.segs.filter(function (s) { return !s.blob; }).length;
           $("makeAll").disabled = S.busy || unsupported || !left;
@@ -3067,6 +3512,7 @@
           show($("makeAll"), !S.busy);
           show($("progress"), S.busy);
           if (S.paused) TSET($("pause"), "resume", "Resume"); else TSET($("pause"), "pause", "Pause");
+          $("stop").disabled = Q.state === "cancelling";
           refreshDone();
           updateStepper();
         }
@@ -3107,28 +3553,41 @@
         var kick = null;
         document.addEventListener("visibilitychange", function () {
           if (kick) kick();
-          if (S.busy && document.hidden) show($("hiddenwarn"), true);
-          if (S.busy && !document.hidden) requestWake();
+          if (!S.busy) return;
+          if (document.hidden) {
+            // Hidden tabs get throttled or frozen (most of all on phones): pause cleanly instead of stalling.
+            show($("hiddenwarn"), true);
+            if (!S.paused) { S.autoPaused = true; setPaused(true); }
+          } else {
+            requestWake();
+            if (S.autoPaused) { S.autoPaused = false; setPaused(false); }
+          }
         });
 
-        /* Seek strictly: wait for 'seeked', then for 'canplay' (data at the new spot). No guessing timers. */
-        function seekStrict(v, t) {
+        /* Seek: wait for 'seeked' and data at the new spot, but never forever (mobile players sometimes never fire 'seeked'). */
+        function seekStrict(v, t, ms) {
           return new Promise(function (res, rej) {
-            var done = false, slow;
+            var done = false, soft, hard, lim = ms || 8000;
             function clean() {
               v.removeEventListener("seeked", onSeeked); v.removeEventListener("canplay", onCan);
-              v.removeEventListener("error", onErr); clearTimeout(slow);
+              v.removeEventListener("error", onErr); clearTimeout(soft); clearTimeout(hard);
             }
             function ok() { if (done) return; done = true; clean(); res(); }
             function onCan() { if (!v.seeking) ok(); }
             function onSeeked() { if (v.readyState >= 3) ok(); else v.addEventListener("canplay", onCan); }
             function onErr() { if (done) return; done = true; clean(); rej(new Error("The video couldn't seek to " + fmt(t) + ".")); }
+            function there() { return !v.seeking && v.readyState >= 2 && Math.abs(v.currentTime - t) < 1; }
             v.addEventListener("seeked", onSeeked); v.addEventListener("error", onErr);
-            // Only a hard failure after a long time; a slow seek just keeps waiting.
-            slow = setTimeout(function () { if (!done && v.readyState >= 3 && !v.seeking) ok(); else slow = setTimeout(onErr, 60000); }, 20000);
+            // No 'seeked' yet: take the frame if the player is already there, else give up at the hard limit.
+            soft = setTimeout(function () { if (there()) ok(); }, Math.round(lim / 2));
+            hard = setTimeout(function () { if (there()) ok(); else onErr(); }, lim);
             if (Math.abs(v.currentTime - t) < 0.001) t += 0.001;
-            v.currentTime = t;
+            try { v.currentTime = t; } catch (e) { onErr(); }
           });
+        }
+        // Throw away a wedged player: drop its source and load it again (the audio graph stays attached).
+        function resetRec() {
+          try { rec.pause(); var u = S.url; rec.removeAttribute("src"); rec.load(); if (u) { rec.src = u; rec.load(); } } catch (e) {}
         }
 
         /* One canvas and one captured stream, reused for every clip in a run. */
@@ -3152,11 +3611,16 @@
         function engineFast() { return (($("bengine") || {}).value || "fast") === "fast"; }
 
         function record(seg, o, onProgress, onState) {
-          var size = outSize(o.format), rc, cuts = cutsFor(seg), ospan = seg.end - seg.start - cutLen(cuts), skipping = false;
+          var size = renderSize(o.format), rc, cuts = cutsFor(seg), ospan = seg.end - seg.start - cutLen(cuts), skipping = false;
           var recorder, chunks = [], fx = { h: false, z: {} };
+          var A = JOB.att || { dead: false, cleanups: [] };
+          function gone() { return S.abort || A.dead; }
           rec.pause();
           onState("wait");
-          return Promise.all([seekStrict(rec, seg.start), AU.mode === "ctx" ? musicPrep(seg, null, false) : null]).then(function (pr) {
+          return ready(rec).then(function () {
+            return Promise.all([seekStrict(rec, seg.start, 10000), AU.mode === "ctx" ? musicPrep(seg, null, false) : null]);
+          }).then(function (pr) {
+            if (gone()) return null;
             var MR = recMusic(pr[1]);
             rc = recCanvas(size);
             drawFrame(rc.ctx, rec, size.w, size.h, o, seg.n, 0, ospan);
@@ -3171,13 +3635,13 @@
             }
             if (AU.gain) AU.gain.gain.value = 1;
             var stream = new MediaStream(rc.vs.getVideoTracks().concat(audioTracks()));
-            var bps = qualityBps();
+            var bps = renderBps(size);
             var opts = { videoBitsPerSecond: bps, audioBitsPerSecond: 128000 };
             if (MIME) opts.mimeType = MIME;
             recorder = new MediaRecorder(stream, opts);
             recorder.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
             return new Promise(function (resolve, reject) {
-              var done = false, raf = 0, timer = 0, dog = 0, span = seg.end - seg.start;
+              var done = false, raf = 0, timer = 0, dog = 0, span = seg.end - seg.start, stopped = false, stopT = 0;
               var stalled = false, lastT = -1, lastMove = performance.now();
               var activeMs = 0, since = 0; // time the recorder actually recorded, for the WebM Duration
               function clock(on) {
@@ -3209,7 +3673,7 @@
               function onPlaying() { if (done) return; stalled = false; runRecorder(); onState("rec"); }
               function onPause() {
                 // A pause we did not ask for (buffer, OS, media keys): keep the recorder alive and play on.
-                if (done || S.paused || S.abort || skipping) return;
+                if (done || S.paused || gone() || skipping) return;
                 if (rec.currentTime >= seg.end - 0.04) return;
                 holdRecorder();
                 rec.play().catch(function () {});
@@ -3229,9 +3693,12 @@
                 snap = null;
                 if (recorder.state !== "inactive") {
                   try { recorder.requestData(); } catch (e) {}
-                  recorder.stop();
+                  try { recorder.stop(); } catch (e) {}
                 }
+                // Some phones never fire 'stop': settle from the chunks we have after 4 s (the length check catches a short file).
+                stopT = setTimeout(function () { if (!stopped) recorder.onstop(); }, 4000);
               }
+              A.cleanups.push(function () { finish(); setTimeout(function () { if (!stopped) recorder.onstop(); }, 0); });
               function schedule() {
                 cancel();
                 if (document.hidden) timer = setTimeout(loop, 33);
@@ -3239,7 +3706,7 @@
               }
               function loop() {
                 if (done) return;
-                if (S.abort) { finish(); return; }
+                if (gone()) { finish(); return; }
                 var t = rec.currentTime;
                 // The only finish line: the clip's end time in the source.
                 var atEnd = t >= seg.end - 0.02 || (rec.ended && t >= Math.min(seg.end, rec.duration) - 0.3);
@@ -3274,15 +3741,17 @@
                 else { lastMove = performance.now(); rec.play().then(function () { runRecorder(); onState("rec"); }, function () {}); }
               };
               recorder.onstop = function () {
+                if (stopped) return;
+                stopped = true; clearTimeout(stopT);
                 // 'stop' fires after the final dataavailable; wait one task so that last chunk is in.
                 setTimeout(function () {
-                  if (S.abort) { chunks = []; resolve(null); return; }
+                  if (gone()) { chunks = []; resolve(null); return; }
                   var blob = new Blob(chunks, { type: BLOBTYPE });
                   chunks = [];
                   resolve({ blob: blob, ms: activeMs });
                 }, 0);
               };
-              recorder.onerror = function (e) { finish(); reject(new Error("The recorder stopped: " + ((e.error && e.error.message) || "unknown error") + ".")); };
+              recorder.onerror = function (e) { finish(); stopped = true; clearTimeout(stopT); reject(new Error("The recorder stopped: " + ((e.error && e.error.message) || "unknown error") + ".")); };
               S.recording = true;
               var start = function () {
                 if (done) return;
@@ -3295,9 +3764,10 @@
                 loop();
               };
               function playReally() {
+                // play() can stay pending forever on phones (no data, hidden tab): give it 8 s.
                 var p = rec.play();
-                if (!p || !p.then) return once(rec, "playing", 0);
-                return p.then(function () {
+                if (!p || !p.then) return once(rec, "playing", 8000);
+                return withTimeout(p, 8000, "play() never started").then(function () {
                   if (rec.paused) throw new Error("play() resolved but the video is still paused");
                 });
               }
@@ -3310,7 +3780,9 @@
                 }
                 throw err;
               }).catch(function (err) {
-                S.recording = false; done = true; clearInterval(dog);
+                if (done) return;
+                S.recording = false; done = true; clearInterval(dog); kick = null; S.pauseHook = null;
+                try { rec.pause(); } catch (e) {}
                 reject(new Error("The video wouldn't play (" + ((err && err.message) || "unknown") + ")."));
               });
             });
@@ -3354,6 +3826,7 @@
                   ab.fileStart = pos;
                   var nx = mp.appendBuffer(ab);
                   pos = typeof nx === "number" && nx > pos ? nx : pos + ab.byteLength;
+                  petJob();
                   next();
                 }).catch(rej);
               })();
@@ -3374,10 +3847,24 @@
                 if (!raw.length) return rej(new Error("The video track has no samples."));
                 var shift = Infinity;
                 raw.forEach(function (s) { shift = Math.min(shift, s.cts / s.timescale); });
+                var at = info.audioTracks && info.audioTracks[0], audio = null;
+                if (at) {
+                  try {
+                    var atrak = mp.getTrackById(at.id), ent = (atrak.mdia.minf.stbl.stsd.entries || [])[0], adesc = null;
+                    var esd = ent && ent.esds && ent.esds.esd;
+                    var d4 = esd && esd.findDescriptor ? esd.findDescriptor(4) : esd && esd.descs && esd.descs[0];
+                    var d5 = d4 && d4.findDescriptor ? d4.findDescriptor(5) : d4 && d4.descs && d4.descs[0];
+                    if (d5 && d5.data) adesc = new Uint8Array(d5.data);
+                    audio = {
+                      codec: at.codec, sr: (at.audio && at.audio.sample_rate) || 48000, ch: (at.audio && at.audio.channel_count) || 2, desc: adesc,
+                      samples: (atrak.samples || []).map(function (q) { return { t: q.cts / q.timescale, d: q.duration / q.timescale, off: q.offset, size: q.size }; })
+                    };
+                  } catch (e) { audio = null; }
+                }
                 var m = vt.matrix || [65536, 0, 0, 0, 65536, 0], rot = ((Math.round(Math.atan2(m[1], m[0]) * 180 / Math.PI / 90) * 90) % 360 + 360) % 360;
                 res({
                   codec: vt.codec, w: (vt.video && vt.video.width) || vt.track_width, h: (vt.video && vt.video.height) || vt.track_height,
-                  desc: desc, rot: rot, hasAudio: !!(info.audioTracks && info.audioTracks.length),
+                  desc: desc, rot: rot, hasAudio: !!(info.audioTracks && info.audioTracks.length), audio: audio,
                   samples: raw.map(function (s) { return { t: s.cts / s.timescale - shift, d: s.duration / s.timescale, key: !!s.is_sync, off: s.offset, size: s.size }; })
                 });
               }
@@ -3434,18 +3921,90 @@
             for (var i = 0; i < N; i++) { var a = i / N; d[o + i] = d[o + i] * (1 - a) + d[i] * a; }
           }
         }
-        function fastAudio(seg, span, has, loopN) {
+        // Decode just this clip's audio samples (s0..s0+span) with WebCodecs, into an AudioBuffer that starts at s0.
+        function segAudio(dm, s0, span) {
+          var AT = dm && dm.audio;
+          if (!AT || !AT.samples.length || typeof AudioDecoder !== "function" || typeof EncodedAudioChunk !== "function") return Promise.reject(new Error("No clip audio decoder."));
+          var cfg = { codec: AT.codec, sampleRate: AT.sr, numberOfChannels: AT.ch };
+          if (AT.desc) cfg.description = AT.desc;
+          return AudioDecoder.isConfigSupported(cfg).then(function (sup) {
+            if (!sup.supported) throw new Error("This browser can't decode " + AT.codec + " audio.");
+            var sm = AT.samples, a = 0, j = sm.length - 1, i, s1 = s0 + span;
+            for (i = 0; i < sm.length; i++) if (sm[i].t + sm[i].d < s0) a = i + 1;
+            for (i = sm.length - 1; i >= 0; i--) if (sm[i].t > s1 + 0.05) j = i - 1;
+            a = Math.max(0, a - 2);
+            if (j < a) throw new Error("No audio in this clip's range.");
+            var out = null, sr = 0, nch = 0, err = null;
+            var dec = new AudioDecoder({
+              output: function (ad) {
+                try {
+                  if (!out) {
+                    sr = ad.sampleRate; nch = Math.min(2, ad.numberOfChannels); out = [];
+                    for (var c = 0; c < nch; c++) out.push(new Float32Array(Math.max(1, Math.ceil(span * sr))));
+                  }
+                  var n = ad.numberOfFrames, st = Math.round((ad.timestamp / 1e6 - s0) * sr), tmp = new Float32Array(n);
+                  for (var c2 = 0; c2 < nch; c2++) {
+                    ad.copyTo(tmp, { planeIndex: Math.min(c2, ad.numberOfChannels - 1), format: "f32-planar" });
+                    var from = Math.max(0, -st), to = Math.min(n, out[c2].length - st);
+                    if (to > from) out[c2].set(tmp.subarray(from, to), st + from);
+                  }
+                } catch (e) { err = err || e; } finally { ad.close(); }
+              },
+              error: function (e) { err = err || e; }
+            });
+            dec.configure(cfg);
+            var k = a;
+            function feed() {
+              if (err) return Promise.reject(err);
+              if (S.abort || (JOB.att && JOB.att.dead)) return Promise.reject(new Error("Cancelled."));
+              if (k > j) return withTimeout(dec.flush(), 15000, "Audio decode timed out.");
+              var b = Math.min(j, k + 63), q0 = k; k = b + 1;
+              return readSamples(sm, q0, b).then(function (bufs) {
+                bufs.forEach(function (data, q) {
+                  var x = sm[q0 + q];
+                  dec.decode(new EncodedAudioChunk({ type: "key", timestamp: Math.round(x.t * 1e6), duration: Math.round(x.d * 1e6), data: data }));
+                });
+                petJob();
+                return (dec.decodeQueueSize > 128 ? sleep(10) : Promise.resolve()).then(feed);
+              });
+            }
+            function close() { try { if (dec.state !== "closed") dec.close(); } catch (e) {} }
+            return feed().then(function () {
+              close();
+              if (err) throw err;
+              if (!out) throw new Error("No audio frames came out.");
+              var ab = new AudioBuffer({ length: out[0].length, numberOfChannels: nch, sampleRate: sr });
+              out.forEach(function (d, c) { ab.copyToChannel(d, c); });
+              out = null;
+              return ab;
+            }, function (e) { close(); throw e; });
+          });
+        }
+        function fastAudio(seg, span, has, loopN, dm) {
           if (!has && !musicSel()) return Promise.resolve(null);
           var MP = null;
-          return (has ? fileAudio(S.file) : Promise.resolve(null)).then(function (ab) {
-            return musicPrep(seg, ab, true).then(function (m) { MP = m; return ab; });
-          }).then(function (ab) {
+          // Clip-only decode first. The old whole-file decode is kept only for small files: on a long video it can take
+          // gigabytes of memory and minutes on a phone, which is what froze or crashed the tab.
+          var src0 = !has ? Promise.resolve(null) : segAudio(dm, seg.start, span).then(function (ab) { return { ab: ab, seg: true }; }, function (e) {
+            if (window.console) console.warn("Clip audio decode failed, trying whole-file decode:", e);
+            if (S.file.size > (lowMem() ? 150 : 400) * 1048576) throw e;
+            return fileAudio(S.file).then(function (ab) { return { ab: ab, seg: false }; });
+          });
+          return src0.then(function (r) {
+            petJob();
+            var ab = r && r.ab;
+            return musicPrep(r && r.seg ? { n: seg.n, start: 0, end: span } : seg, ab, true).then(function (m) {
+              if (m && m.env && r && r.seg) m.env.t0 = seg.start;
+              MP = m; return r;
+            });
+          }).then(function (r) {
+            var ab = r && r.ab;
             var Ctx = window.OfflineAudioContext || window.webkitOfflineAudioContext;
             var ch = ab ? Math.min(2, ab.numberOfChannels) : 2, oc = new Ctx(ch, Math.max(1, Math.ceil(span * 48000)), 48000);
             if (ab) {
               var src = oc.createBufferSource();
               src.buffer = ab; src.connect(oc.destination);
-              src.start(0, Math.min(seg.start, ab.duration), span);
+              src.start(0, r.seg ? 0 : Math.min(seg.start, ab.duration), span);
             }
             if ($("bsfx").checked) {
               var g = oc.createGain(); g.gain.value = +$("bsfxv").value; g.connect(oc.destination);
@@ -3475,7 +4034,7 @@
               var ad = new AudioData({ format: "f32-planar", sampleRate: sr, numberOfFrames: n, numberOfChannels: ch, timestamp: Math.round((p / sr) * 1e6), data: data });
               ae.encode(ad); ad.close();
             }
-            ae.flush().then(function () { try { ae.close(); } catch (e) {} res(); }, rej);
+            withTimeout(ae.flush(), 15000, "The audio encoder stopped responding.").then(function () { try { ae.close(); } catch (e) {} res(); }, function (e) { try { ae.close(); } catch (e2) {} rej(e); });
           });
         }
         function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
@@ -3498,12 +4057,18 @@
         }
 
         function renderClipFast(seg, o, onProgress, onState) {
-          var size = outSize(o.format), span = seg.end - seg.start, s0 = seg.start, s1 = seg.end;
-          var dec = null, enc = null, err = null, hdec = null, head = null, LN = o.loop || 0;
+          var size = renderSize(o.format), span = seg.end - seg.start, s0 = seg.start, s1 = seg.end;
+          var dec = null, enc = null, err = null, hdec = null, head = null, LN = o.loop || 0, cvs = [];
+          var A = JOB.att || { dead: false, cleanups: [] };
+          function gone() { return S.abort || A.dead; }
+          A.cleanups.push(function () { err = err || new Error("Stopped."); closeAll(); });
           onState("wait");
           return demux(S.file).then(function (dm) {
-            return Promise.all([dm, loadLib(MUXER_URL, "Mp4Muxer"), fastAudio(seg, span, dm.hasAudio, o.loop || 0), pickVideoCodec(size, qualityBps())]);
+            petJob();
+            return Promise.all([dm, loadLib(MUXER_URL, "Mp4Muxer"), fastAudio(seg, span, dm.hasAudio, o.loop || 0, dm), pickVideoCodec(size, renderBps(size))]);
           }).then(function (r) {
+            if (gone()) return null;
+            petJob();
             var dm = r[0], MX = r[1], au = r[2], vcfg = r[3];
             var dcfg = { codec: dm.codec, codedWidth: dm.w, codedHeight: dm.h };
             if (dm.desc) dcfg.description = dm.desc;
@@ -3513,6 +4078,7 @@
               var mcfg = { target: target, video: { codec: "avc", width: size.w, height: size.h }, fastStart: "in-memory", firstTimestampBehavior: "offset" };
               if (au) mcfg.audio = { codec: au.codec, sampleRate: au.sr, numberOfChannels: au.ch };
               var muxer = new MX.Muxer(mcfg);
+              if (gone()) return null;
               return encodeAudio(au, muxer).then(function () { return loopHead(dm, dcfg); }).then(function (h) { head = h; return video(dm, vcfg, dcfg, muxer); }).then(function (ok) {
                 if (!ok) return null;
                 muxer.finalize();
@@ -3525,6 +4091,7 @@
             [dec, enc, hdec].forEach(function (c) { try { if (c && c.state !== "closed") c.close(); } catch (e) {} });
             (head || []).forEach(function (h) { try { h.b.close(); } catch (e) {} });
             head = null;
+            cvs.forEach(function (c) { c.width = c.height = 1; }); cvs = [];
           }
           function pickHead(list, h) {
             var best = list[0];
@@ -3543,12 +4110,13 @@
             var cv = document.createElement("canvas"), ctx = cv.getContext("2d");
             cv.width = size.w; cv.height = size.h;
             var src = document.createElement("canvas"), sctx = src.getContext("2d");
-            src.readyState = 4;
+            src.readyState = 4; cvs.push(cv, src);
             var out = [], pend = [], idx = 0, herr = null;
             hdec = new VideoDecoder({
               output: function (frame) {
                 var t = frame.timestamp / 1e6;
-                if (herr || S.abort || t < s0 - 0.001 || t >= h1 || idx++ % stride) { frame.close(); return; }
+                petJob();
+                if (herr || gone() || t < s0 - 0.001 || t >= h1 || idx++ % stride) { frame.close(); return; }
                 try { paintSrc(src, sctx, frame, dm.rot); } finally { frame.close(); }
                 var el = Math.max(0, t - s0);
                 src.currentTime = t;
@@ -3561,8 +4129,8 @@
             hdec.configure(dcfg);
             var k2 = first;
             function feedH() {
-              if (herr || S.abort) return Promise.resolve();
-              if (k2 > last) return hdec.flush();
+              if (herr || gone()) return Promise.resolve();
+              if (k2 > last) return withTimeout(hdec.flush(), 15000, "Loop decode timed out.");
               var j = Math.min(last, k2 + 7), a = k2; k2 = j + 1;
               return readSamples(sm, a, j).then(function (bufs) {
                 bufs.forEach(function (data, q) {
@@ -3594,13 +4162,14 @@
             var cv = document.createElement("canvas"), ctx = cv.getContext("2d");
             cv.width = size.w; cv.height = size.h;
             var src = document.createElement("canvas"), sctx = src.getContext("2d");
-            src.readyState = 4;
+            src.readyState = 4; cvs.push(cv, src);
             enc = new VideoEncoder({ output: function (c, m) { muxer.addVideoChunk(c, m); }, error: function (e) { err = err || e; } });
             enc.configure(vcfg);
             dec = new VideoDecoder({
               output: function (frame) {
                 var t = frame.timestamp / 1e6, fd = frame.duration;
-                if (err || S.abort || t < s0 - 0.001 || t >= s1) { frame.close(); return; }
+                petJob(); // decoding frames before the clip start (long keyframe gaps) still counts as alive
+                if (err || gone() || t < s0 - 0.001 || t >= s1) { frame.close(); return; }
                 try { paintSrc(src, sctx, frame, dm.rot); } finally { frame.close(); }
                 var el = Math.max(0, t - s0);
                 src.currentTime = t;
@@ -3615,7 +4184,7 @@
                 var vf = new VideoFrame(cv, fd ? { timestamp: ts, duration: fd } : { timestamp: ts });
                 enc.encode(vf, { keyFrame: key });
                 vf.close();
-                done++;
+                done++; petJob();
                 onProgress(Math.min(1, done / expected));
               },
               error: function (e) { err = err || e; }
@@ -3632,9 +4201,12 @@
             }
             function feed() {
               if (err) throw err;
-              if (S.abort) return Promise.resolve(false);
+              if (gone()) return Promise.resolve(false);
               if (S.paused) { onState("paused"); return sleep(200).then(function () { if (!S.paused) onState("rec"); return feed(); }); }
-              if (k > last) return dec.flush().then(function () { return enc.flush(); }).then(function () { if (err) throw err; return !S.abort; });
+              // Flushes can hang on some phone encoders: bounded, so the watchdog/fallback can take over.
+              if (k > last) return withTimeout(dec.flush(), 20000, "The video decoder stopped responding.").then(function () {
+                return withTimeout(enc.flush(), 20000, "The video encoder stopped responding.");
+              }).then(function () { if (err) throw err; return !gone(); });
               if (dec.decodeQueueSize > 8 || enc.encodeQueueSize > 8) return waitQ().then(feed);
               var j = Math.min(last, k + 7);
               var a = k; k = j + 1;
@@ -3811,160 +4383,250 @@
         }
         function releaseWake() { if (wake) { try { wake.release().catch(function () {}); } catch (e) {} wake = null; } }
 
-        /* ---------- sequential queue: one clip at a time ---------- */
+        /* ---------- sequential queue: one clip at a time, single-flight ---------- */
+        function killAttempt(A) {
+          if (!A || A.dead) return;
+          A.dead = true;
+          A.cleanups.splice(0).forEach(function (f) { try { f(); } catch (e) {} });
+          if (JOB.att === A) JOB.att = null;
+        }
+        // Run one clip on one engine, raced against a watchdog: no progress for WD.idle (WD.prep while starting) kills it.
+        function runAttempt(seg, o, engine, onP, onS) {
+          var A = { seg: seg, engine: engine, dead: false, beat: performance.now(), phase: "prep", cleanups: [] }, lastP = -1;
+          JOB.att = A;
+          if (engine === "rec") A.cleanups.push(function () { releaseCanvas(); resetRec(); });
+          function P(p) {
+            if (A.dead) return;
+            if (p !== lastP) { lastP = p; A.beat = performance.now(); A.phase = "run"; }
+            onP(p);
+          }
+          function St(st) { if (!A.dead) onS(st); }
+          var work;
+          try { work = engine === "fast" ? renderClipFast(seg, o, P, St) : record(seg, o, P, St); } catch (e) { work = Promise.reject(e); }
+          return new Promise(function (res, rej) {
+            var over = false, iv = setInterval(tick, 500);
+            function end() { over = true; clearInterval(iv); }
+            function tick() {
+              if (over) return;
+              var now = performance.now();
+              if (S.abort) { end(); killAttempt(A); res(null); return; }
+              if (S.paused) { A.beat = now; return; }
+              if (now - A.beat > (A.phase === "prep" ? WD.prep : WD.idle)) {
+                end(); killAttempt(A);
+                rej(new Error(A.phase === "prep" ? "It took too long to start." : "It stopped moving for " + Math.round(WD.idle / 1000) + " s."));
+              }
+            }
+            work.then(function (r) {
+              if (over) return;
+              end(); A.cleanups = []; A.dead = true; if (JOB.att === A) JOB.att = null;
+              res(r);
+            }, function (e) {
+              if (over) return;
+              end(); killAttempt(A); rej(e);
+            });
+          });
+        }
+        // Like withTimeout, but also lets go at once when the queue is cancelled (resolves null).
+        function untilAbort(p, ms, msg) {
+          return new Promise(function (res, rej) {
+            var over = false, iv = setInterval(function () { if (S.abort && !over) { over = true; clearInterval(iv); res(null); } }, 300);
+            withTimeout(p, ms, msg).then(function (v) { if (!over) { over = true; clearInterval(iv); res(v); } }, function (e) { if (!over) { over = true; clearInterval(iv); rej(e); } });
+          });
+        }
+        // Measure the file, patch its duration header if needed, and refuse a file that came out short.
+        function checkLength(seg, res, span) {
+          var near = function (d) { return isFinite(d) && Math.abs(d - span) <= span * 0.1; };
+          var rawUrl = URL.createObjectURL(res.blob);
+          return probeDuration(rawUrl).then(function (d0) {
+            URL.revokeObjectURL(rawUrl);
+            var real = near(d0) ? d0 : near(res.ms / 1000) ? res.ms / 1000 : span;
+            return res.fast ? res.blob : fixDuration(res.blob, real);
+          }).then(function (blob) {
+            var url = URL.createObjectURL(blob);
+            return probeDuration(url).then(function (d) {
+              URL.revokeObjectURL(url);
+              seg.realDur = d;
+              seg.lenMsg = near(d) ? "✓ length OK " + fmt(d) : "length " + (d ? fmt(d) : "unknown") + ", expected " + fmt(span);
+              if (!(d >= span * 0.9)) throw new Error("The file came out " + (d ? d.toFixed(1) + "s" : "unreadable") + " instead of " + Math.round(span) + "s.");
+              return blob;
+            });
+          });
+        }
+        function setPaused(on) {
+          if (!S.busy || S.paused === on) return;
+          S.paused = on;
+          if (S.markPause) S.markPause(S.paused);
+          if (S.pauseHook) S.pauseHook(S.paused);
+          sfxMute(S.paused);
+          $("cstatus").textContent = S.paused ? (S.autoPaused ? "Paused while this tab is hidden. It carries on when you come back." : "Paused. Tap Resume to carry on from here.") : "";
+          if (S.paused) releaseWake(); else requestWake();
+          if (Q.cur && S.paused) setStatus(Q.cur, "paused");
+          refreshButtons();
+          if (S.queueProgress) S.queueProgress();
+        }
         function makeQueue(list) {
-          if (S.busy || unsupported || !list.length) return;
+          if (unsupported || !list || !list.length) return;
+          if (Q.state !== "idle") {
+            // Already rendering: queue these behind the current clip instead of ignoring the tap.
+            if (Q.state === "running") list.forEach(function (i) {
+              var s = S.segs[i];
+              if (!s || s === Q.cur || Q.pending.indexOf(i) >= 0) return;
+              Q.pending.push(i); setStatus(s, "queued");
+            });
+            refreshButtons();
+            if (S.queueProgress) S.queueProgress();
+            return;
+          }
+          if (Q.analyzing) return;
           if ($("bcut").checked && !(AN && AN.file === S.file) && S.file) {
+            Q.analyzing = true;
             $("cstatus").textContent = "Analysing audio for silence cut…";
-            analyze().then(function () { makeQueue(list); }, function (err) {
+            withTimeout(analyze(), 300000, "Analysing took too long.").then(function () { Q.analyzing = false; makeQueue(list); }, function (err) {
+              Q.analyzing = false;
               $("bcut").checked = false; makeQueue(list);
               alertMsg($("err3"), "Silence cut skipped", err.message);
             });
             return;
           }
+          Q.state = "running"; Q.pending = list.slice(); Q.cur = null;
           rec.muted = false;
           primeAudio();
-          S.busy = true; S.abort = false; S.paused = false;
+          S.busy = true; S.abort = false; S.paused = false; S.autoPaused = false;
           alertMsg($("err3"));
           show($("hiddenwarn"), false);
           $("cstatus").textContent = "";
           refreshButtons();
           requestWake();
           var o = S.built;
-          var lens = list.map(function (i) { var s = S.segs[i]; return s.end - s.start - cutLen(cutsFor(s)); });
-          var total = lens.reduce(function (a, b) { return a + b; }, 0);
-          var doneSec = 0, made = 0, failed = 0, k = 0, cur = 0;
+          var doneSec = 0, curLen = 0, made = 0, failed = 0, n = 0, curP = 0;
           var t0 = performance.now(), pausedMs = 0, pausedAt = 0;
-          list.forEach(function (i) { var s = S.segs[i]; if (!s.blob) setStatus(s, "queued"); });
+          function lenOf(i) { var s = S.segs[i]; return s ? s.end - s.start - cutLen(cutsFor(s)) : 0; }
+          list.forEach(function (i) { var s = S.segs[i]; if (s) setStatus(s, "queued"); });
           function progress(p) {
-            cur = doneSec + p * lens[k];
+            curP = p;
+            var total = doneSec + curLen + Q.pending.reduce(function (a, i) { return a + lenOf(i); }, 0) || 1;
+            var cur = doneSec + p * curLen, all = n + Q.pending.length;
             var pct = Math.round((cur / total) * 100);
-            // Real time per media second so far (at least 1.0), applied to what is left, plus overhead per clip.
             var spent = (performance.now() - t0 - pausedMs) / 1000;
             var rate = cur > 5 ? Math.max(engineFast() ? 0.02 : 1, spent / cur) : engineFast() ? 0.3 : 1.05;
-            var left = (total - cur) * rate + (list.length - k - 1) * 2;
-            $("ptext").textContent = (S.paused ? "Paused · " : "") + "Clip " + (k + 1) + " of " + list.length + " · " + pct + "%";
+            var left = (total - cur) * rate + Q.pending.length * 2;
+            var tail = (made ? " · " + T("qDone", "{d} ready", { d: made }) : "") + (failed ? " · " + T("qFail", "{f} failed", { f: failed }) : "");
+            $("ptext").textContent = Q.state === "cancelling" ? T("cancelling", "Cancelling…") : (S.paused ? "Paused · " : "") + T("qProg", "Clip {k} of {n} · {p}%", { k: Math.max(1, n), n: Math.max(1, all), p: pct }) + tail;
             $("peta").textContent = S.paused ? "" : eta(left);
             $("pbar").firstChild.style.width = pct + "%";
             $("pbar").setAttribute("aria-valuenow", pct);
           }
-          S.queueProgress = function () { progress(Math.max(0, (cur - doneSec) / (lens[k] || 1))); };
-          // Fast engine first; on any error or missing WebCodecs, record this clip instead.
-          function renderSeg(seg, o, onP, onS) {
-            seg.fast = false; seg.compat = false;
-            var useFast = engineFast() && !$("bcut").checked;
-            if (!useFast) return record(seg, o, onP, onS);
-            function compat(err) {
-              seg.fast = false; seg.compat = true;
-              if (err && window.console) console.warn("Fast render fell back to recording:", err);
-              onP(0);
-              return record(seg, o, onP, onS);
-            }
-            if (!fastSupported() || !S.file) return compat(new Error("WebCodecs is not available."));
-            seg.fast = true;
-            return renderClipFast(seg, o, onP, onS).then(function (res) {
-              if (res && res.blob && res.blob.size) return res;
-              if (S.abort) return null;
-              return compat(new Error("The fast engine returned an empty file."));
-            }, function (err) {
-              if (S.abort) return null;
-              return compat(err);
-            });
+          S.queueProgress = function () { progress(curP); };
+          // Engines to try for a clip: the chosen one, then the other one once. Fast can't do silence cuts.
+          function enginesFor() {
+            var fastOk = fastSupported() && !!S.file && !$("bcut").checked;
+            var first = engineFast() && fastOk ? "fast" : "rec";
+            return first === "fast" ? ["fast", "rec"] : fastOk ? ["rec", "fast"] : ["rec"];
           }
           function whilePaused() {
             if (!S.paused || S.abort) return Promise.resolve();
             return new Promise(function (res) { var t = setInterval(function () { if (!S.paused || S.abort) { clearInterval(t); res(); } }, 200); });
           }
-          function step() {
-            if (S.abort || k >= list.length) return Promise.resolve();
-            return whilePaused().then(function () {
-              if (S.abort) return;
-              var seg = S.segs[list[k]], span = lens[k];
+          function renderOne(seg, span) {
+            var engines = enginesFor(), idx = 0, lastErr = null;
+            seg.failed = false;
+            function next() {
+              if (S.abort) return Promise.resolve(false);
+              if (idx >= engines.length) {
+                setFailed(seg, (lastErr && lastErr.message) || "Rendering failed."); failed++;
+                refreshDone();
+                return Promise.resolve(false);
+              }
+              var eng = engines[idx++];
+              seg.fast = eng === "fast"; seg.compat = eng === "rec" && idx > 1;
               progress(0);
-              setStatus(seg, "wait");
-              seg.el.li.scrollIntoView({ block: "nearest", behavior: "smooth" });
-              return renderSeg(seg, o, function (p) { setStatus(seg, "rec", p); progress(p); }, function (st) {
-                if (st === "wait") setStatus(seg, "wait");
-                else if (st === "paused") setStatus(seg, "queued");
-              }).then(function (res) {
-                if (!res || !res.blob || !res.blob.size) {
-                  if (S.abort) setStatus(seg, seg.blob ? "done" : "idle");
-                  else { setFailed(seg, "The recorder returned an empty file."); failed++; }
-                  return;
-                }
-                setStatus(seg, "check");
-                var near = function (d) { return isFinite(d) && Math.abs(d - span) <= span * 0.1; };
-                var rawUrl = URL.createObjectURL(res.blob);
-                // Measure the raw file; fall back to the recorder's active time, then the expected length.
-                return probeDuration(rawUrl).then(function (d0) {
-                  URL.revokeObjectURL(rawUrl);
-                  var real = near(d0) ? d0 : near(res.ms / 1000) ? res.ms / 1000 : span;
-                  return res.fast ? res.blob : fixDuration(res.blob, real);
-                }).then(function (blob) {
-                  // The patched blob is the one stored, downloaded, shared and opened.
-                  var url = URL.createObjectURL(blob);
-                  return probeDuration(url).then(function (d) {
-                    seg.realDur = d;
-                    seg.lenMsg = near(d) ? "✓ length OK " + fmt(d) : "length " + (d ? fmt(d) : "unknown") + ", expected " + fmt(span);
-                    if (!(d >= span * 0.9)) {
-                      URL.revokeObjectURL(url);
-                      setFailed(seg, "The file came out " + (d ? d.toFixed(1) + "s" : "unreadable") + " instead of " + Math.round(span) + "s.");
-                      failed++;
-                      return;
-                    }
-                    seg.loopMade = !!o.loop;
-                    setResult(seg, blob, url); made++;
-                  });
+              if (idx > 1) setStatus(seg, "retrying", eng); else setStatus(seg, "wait");
+              return whilePaused().then(function () {
+                if (S.abort) return null;
+                return runAttempt(seg, o, eng, function (p) { setStatus(seg, "rec", p); progress(p); }, function (st) {
+                  if (st === "wait") { if (idx > 1) setStatus(seg, "retrying", eng); else setStatus(seg, "wait"); }
+                  else if (st === "paused") setStatus(seg, "paused");
                 });
-              }, function (err) {
-                setFailed(seg, (err && err.message) || "Recording failed.");
-                failed++;
-                // One clip failing does not end the queue; a seek can recover on the next one.
-              }).then(function () {
-                doneSec += lens[k]; k++;
-                return step();
+              }).then(function (res) {
+                if (S.abort) return false;
+                if (!res || !res.blob || !res.blob.size) throw new Error("The " + (eng === "fast" ? "fast engine" : "recorder") + " returned an empty file.");
+                setStatus(seg, "check");
+                return untilAbort(checkLength(seg, res, span), WD.post, "Checking the file took too long.").then(function (blob) {
+                  res = null;
+                  if (!blob || S.abort) return false;
+                  seg.loopMade = !!o.loop;
+                  setResult(seg, blob); made++;
+                  return true;
+                });
+              }).catch(function (err) {
+                if (S.abort) return false;
+                lastErr = err;
+                if (window.console) console.warn("Part " + seg.n + " failed on the " + eng + " engine:", err);
+                return next();
               });
+            }
+            return next();
+          }
+          function step() {
+            if (S.abort || !Q.pending.length) return Promise.resolve();
+            var i = Q.pending.shift(), seg = S.segs[i];
+            if (!seg || !seg.el) return step();
+            Q.cur = seg; curLen = lenOf(i); n++;
+            refreshButtons();
+            progress(0);
+            try { seg.el.li.scrollIntoView({ block: "nearest", behavior: "smooth" }); } catch (e) {}
+            return renderOne(seg, curLen).then(function () {
+              if (S.abort) setStatus(seg, seg.blob ? "done" : "idle");
+              doneSec += curLen; curLen = 0; Q.cur = null;
+              // Free the recorder canvas between clips and give the phone a breath before the next one.
+              releaseCanvas();
+              return sleep(60).then(step);
             });
           }
-          step().catch(function (err) {
-            alertMsg($("err3"), "Something went wrong", (err && err.message ? err.message + " " : "") + "Try again, or use the latest Chrome or Edge.");
-          }).then(function () {
+          function endQueue() {
             var stopped = S.abort;
-            S.busy = false; S.abort = false; S.recording = false; S.paused = false; S.pauseHook = null; S.queueProgress = null;
-            rec.pause();
+            killAttempt(JOB.att);
+            Q.pending.forEach(function (i) { var s = S.segs[i]; if (s) setStatus(s, s.blob ? "done" : "idle"); });
+            Q.state = "idle"; Q.pending = []; Q.cur = null;
+            S.busy = false; S.abort = false; S.recording = false; S.paused = false; S.autoPaused = false;
+            S.pauseHook = null; S.queueProgress = null; S.markPause = null; kick = null;
+            show($("hiddenwarn"), false);
+            try { rec.pause(); } catch (e) {}
             releaseWake();
             releaseCanvas();
             refreshButtons();
-            if (!$("cstatus").textContent || /^Paused/.test($("cstatus").textContent)) {
+            if (!$("cstatus").textContent || /^(Paused|Analysing)/.test($("cstatus").textContent)) {
               $("cstatus").textContent = (stopped ? "Cancelled. " + made + " clip" + (made === 1 ? "" : "s") + " made." : "Done. " + made + " clip" + (made === 1 ? " is" : "s are") + " ready to download.") +
                 (failed ? " " + failed + " failed - tap Retry on " + (failed === 1 ? "it" : "each") + "." : "");
             }
-          });
+          }
           S.markPause = function (on) {
             if (on) pausedAt = performance.now();
             else if (pausedAt) { pausedMs += performance.now() - pausedAt; pausedAt = 0; }
           };
+          var chain;
+          try { chain = step(); } catch (e) { chain = Promise.reject(e); }
+          chain.catch(function (err) {
+            alertMsg($("err3"), "Something went wrong", (err && err.message ? err.message + " " : "") + "Try again, or use the latest Chrome or Edge.");
+          }).then(endQueue, endQueue);
         }
         $("makeAll").addEventListener("click", function () {
+          if (Q.state !== "idle") return;
           var list = [];
           S.segs.forEach(function (s, i) { if (!s.blob) list.push(i); });
           makeQueue(list);
         });
         $("pause").addEventListener("click", function () {
-          if (!S.busy) return;
-          S.paused = !S.paused;
-          if (S.markPause) S.markPause(S.paused);
-          if (S.pauseHook) S.pauseHook(S.paused);
-          sfxMute(S.paused);
-          $("cstatus").textContent = S.paused ? "Paused. Tap Resume to carry on from here." : "";
-          if (S.paused) releaseWake(); else requestWake();
-          refreshButtons();
-          if (S.queueProgress) S.queueProgress();
+          if (!S.busy || Q.state !== "running") return;
+          S.autoPaused = false;
+          setPaused(!S.paused);
         });
         $("stop").addEventListener("click", function () {
-          S.abort = true;
-          if (S.paused) { S.paused = false; }
-          $("ptext").textContent = "Cancelling…";
+          if (!S.busy || S.abort) return;
+          S.abort = true; Q.state = "cancelling";
+          if (S.paused) { S.paused = false; if (S.markPause) S.markPause(false); }
+          $("ptext").textContent = T("cancelling", "Cancelling…");
+          $("stop").disabled = true;
           if (kick) kick();
         });
         /* ---------- one-tap presets ---------- */
@@ -4036,7 +4698,7 @@
           });
         });
         // Any manual change to a setting a preset controls turns the chip back to Custom.
-        var NOT_PRESET = "#caps, #filePane, #autoPane, #series, #badge, #label, #tstart, #tend, #maxclips, #mtop, #uivol, #bsave, #bengine, #bquality, #bhook, #scrub";
+        var NOT_PRESET = "#caps, #filePane, #autoPane, #series, #badge, #label, #tstart, #tend, #maxclips, #mtop, #uivol, #bsave, #bengine, #bquality, #bres, #bhook, #scrub";
         function manual(e) {
           if (PRESET_APPLYING || !e.isTrusted || S.preset === "custom") return;
           if (e.target.closest && e.target.closest(NOT_PRESET)) return;
@@ -4046,32 +4708,44 @@
         $("tpls").addEventListener("click", function (e) { if (e.target.closest(".x-tpl")) manual(e); });
         $("stage").addEventListener("pointerdown", manual);
 
-        /* ---------- welcome popup, every visit ---------- */
+        /* ---------- intro card: shown until dismissed (remembered in localStorage) ---------- */
         (function welcome() {
-          var dlg = $("welcome"), dim = null, fallback = false;
+          var dlg = $("welcome"), dim = null, fallback = false, KEY = "lts-intro-dismissed";
+          function seen() { try { return localStorage.getItem(KEY) === "1"; } catch (e) { return false; } }
+          function remember() { try { localStorage.setItem(KEY, "1"); } catch (e) {} }
+          function onKey(e) { if (e.key === "Escape") close(); }
           function close() {
+            remember();
             if (fallback) {
               dlg.removeAttribute("open"); dlg.classList.remove("is-fallback");
               if (dim) { dim.remove(); dim = null; }
               document.removeEventListener("keydown", onKey);
+              fallback = false;
             } else { try { dlg.close(); } catch (e) { dlg.removeAttribute("open"); } }
           }
-          function onKey(e) { if (e.key === "Escape") close(); }
-          try {
-            if (typeof dlg.showModal !== "function") throw new Error("no dialog");
-            dlg.showModal();
-          } catch (e) {
-            fallback = true;
-            dim = document.createElement("div"); dim.className = "x-modal-dim";
-            dim.addEventListener("click", close);
-            document.body.appendChild(dim);
-            dlg.classList.add("is-fallback"); dlg.setAttribute("open", ""); dlg.setAttribute("role", "dialog"); dlg.setAttribute("aria-modal", "true");
-            document.addEventListener("keydown", onKey);
+          function open() {
+            if (dlg.hasAttribute("open")) return;
+            try {
+              if (typeof dlg.showModal !== "function") throw new Error("no dialog");
+              dlg.showModal();
+            } catch (e) {
+              fallback = true;
+              dim = document.createElement("div"); dim.className = "x-modal-dim";
+              dim.addEventListener("click", close);
+              document.body.appendChild(dim);
+              dlg.classList.add("is-fallback"); dlg.setAttribute("open", ""); dlg.setAttribute("role", "dialog"); dlg.setAttribute("aria-modal", "true");
+              document.addEventListener("keydown", onKey);
+            }
+            try { dlg.scrollTop = 0; $("welcomeDone").focus({ preventScroll: true, focusVisible: false }); } catch (e) {}
           }
-          try { $("welcomeDone").focus(); } catch (e) {}
           $("welcomeDone").addEventListener("click", close);
+          $("introX").addEventListener("click", close);
+          dlg.addEventListener("cancel", remember);
           // A tap on the dimmed area (the dialog box itself, outside its content) closes it.
           dlg.addEventListener("click", function (e) { if (e.target === dlg) close(); });
+          var again = $("introOpen");
+          if (again) again.addEventListener("click", open);
+          if (!seen()) open();
         })();
 
         window.addEventListener("beforeunload", function (e) { if (S.busy) { e.preventDefault(); e.returnValue = ""; } });
@@ -4166,6 +4840,97 @@
           });
         }).observe(clips, { subtree: true, attributes: true, attributeFilter: ["class"], attributeOldValue: true });
         window.addEventListener("error", function () { play("buzz"); });
+      })();
+    </script>
+    <script>
+      /* Site shell: Clip Studio tabs, header nav, button ripple, pausing the background while work runs. */
+      (function () {
+        "use strict";
+        var d = document, root = d.documentElement;
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        function byId(id) { return d.getElementById(id); }
+        function tr(key, en) { return window.L10N ? window.L10N.t(key, en) : en; }
+
+        /* Clip Studio tabs */
+        var tabs = [].slice.call(d.querySelectorAll("#studioTabs [role=tab]"));
+        function pick(t, focus, quiet) {
+          tabs.forEach(function (b) {
+            var on = b === t, panel = byId(b.getAttribute("aria-controls"));
+            b.setAttribute("aria-selected", on ? "true" : "false");
+            b.tabIndex = on ? 0 : -1;
+            if (panel) panel.hidden = !on;
+          });
+          if (focus) t.focus();
+          if (!quiet) try { t.scrollIntoView({ block: "nearest", inline: "nearest", behavior: reduce ? "auto" : "smooth" }); } catch (e) {}
+          try { localStorage.setItem("lts-studio-tab", t.id); } catch (e) {}
+        }
+        tabs.forEach(function (b, i) {
+          b.addEventListener("click", function () { pick(b); });
+          b.addEventListener("keydown", function (e) {
+            var n = -1;
+            if (e.key === "ArrowRight") n = (i + 1) % tabs.length;
+            else if (e.key === "ArrowLeft") n = (i - 1 + tabs.length) % tabs.length;
+            else if (e.key === "Home") n = 0;
+            else if (e.key === "End") n = tabs.length - 1;
+            if (n >= 0) { e.preventDefault(); pick(tabs[n], true); }
+          });
+        });
+        try { var last = byId(localStorage.getItem("lts-studio-tab") || ""); if (last && tabs.indexOf(last) >= 0) pick(last, false, true); } catch (e) {}
+
+        /* "Clip Studio" links: open step 3 when it is available, otherwise explain */
+        function toEl(el) { if (el) el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" }); }
+        d.querySelectorAll("[data-studio-link]").forEach(function (a) {
+          a.addEventListener("click", function (e) {
+            e.preventDefault();
+            var step3 = byId("step3"), studio = byId("boost");
+            function reveal() { studio.open = true; toEl(studio); }
+            if (step3 && !step3.classList.contains("x-hidden")) { reveal(); return; }
+            var b = d.querySelector('.x-stepper [data-go="3"]');
+            if (b && !b.disabled) { b.click(); setTimeout(reveal, 80); return; }
+            if (window.L10N) window.L10N.toast(tr("studioNeed", "Upload a video first. Clip Studio opens in step 3, Style."));
+            toEl(byId("tool"));
+          });
+        });
+
+        /* Header: highlight the section in view */
+        var links = [].slice.call(d.querySelectorAll(".x-head__nav a"));
+        var spy = ["tool", "boost", "soon", "about", "faq", "contact"];
+        var navFor = { tool: "#tool", boost: "#boost", soon: "", about: "#about", faq: "#faq", contact: "#contact" };
+        var ticking = false;
+        function sync() {
+          ticking = false;
+          var line = 120, cur = "";
+          spy.forEach(function (id) {
+            var el = byId(id);
+            if (!el || !el.offsetParent) return;
+            if (el.getBoundingClientRect().top <= line) cur = id;
+          });
+          if (cur === "soon") cur = "tool";
+          if ((window.innerHeight + window.scrollY) >= d.documentElement.scrollHeight - 4) cur = "contact";
+          links.forEach(function (a) {
+            if (a.getAttribute("href") === navFor[cur]) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current");
+          });
+          root.classList.toggle("x-scrolled", window.scrollY > 8);
+        }
+        window.addEventListener("scroll", function () { if (!ticking) { ticking = true; window.requestAnimationFrame(sync); } }, { passive: true });
+        sync();
+
+        /* Ripple on press: a CSS pseudo-element, positioned where the finger landed */
+        if (!reduce) d.addEventListener("pointerdown", function (e) {
+          var b = e.target.closest && e.target.closest(".x-btn, .x-preset, .x-tab");
+          if (!b || b.disabled) return;
+          var r = b.getBoundingClientRect();
+          b.style.setProperty("--rx", (e.clientX - r.left) + "px");
+          b.style.setProperty("--ry", (e.clientY - r.top) + "px");
+          b.classList.remove("is-rip"); void b.offsetWidth; b.classList.add("is-rip");
+          clearTimeout(b.__rip); b.__rip = setTimeout(function () { b.classList.remove("is-rip"); }, 650);
+        }, { passive: true });
+
+        /* Pause the animated background while clips, captions or analysis are being made */
+        var watch = ["progress", "aprog", "mprog"].map(byId).filter(Boolean);
+        function busy() { root.classList.toggle("x-busy", watch.some(function (el) { return !el.classList.contains("x-hidden"); })); }
+        if (window.MutationObserver) watch.forEach(function (el) { new MutationObserver(busy).observe(el, { attributes: true, attributeFilter: ["class"] }); });
+        busy();
       })();
     </script>
   </body>
