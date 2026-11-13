@@ -1,6 +1,6 @@
 /* Long to Shorts Clipper - service worker (app install, offline shell, share target) */
-var VER = "lts-v1";
-var SHELL = ["./", "./index.html", "./hark.css", "./hark-hero.css", "./hark.js", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png"];
+var VER = "lts-v2";
+var SHELL = ["./", "./index.html", "./hark.css", "./hark-hero.css", "./hark.js", "./manifest.json", "./icons/icon-192.png", "./icons/icon-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(VER).then(function (c) { return c.addAll(SHELL); }).then(function () { return self.skipWaiting(); }));
 });
