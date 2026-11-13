@@ -13,6 +13,12 @@
     <meta property="og:description" content="Turn long videos into Shorts and Reels with captions, hooks and music. Free, no watermark, no signup." />
     <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#08080f" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Long to Shorts" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -388,6 +394,14 @@
         .x-cardx:hover { transform: none; }
       }
     </style>
+
+    <style>
+      .x-inst { white-space: nowrap; font-weight: 700; padding: 8px 14px; border-radius: 999px; background: linear-gradient(135deg,#7c3aed,#ec4899); color: #fff; border: 0; }
+      .x-inst[hidden] { display: none !important; }
+      .x-cardx .x-inst { margin-top: 10px; }
+      .x-insthint { position: fixed; left: 12px; right: 12px; bottom: 16px; z-index: 9999; background: #16162a; color: #fff; border: 1px solid #333; border-radius: 14px; padding: 14px 40px 14px 14px; font-size: 14px; line-height: 1.45; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+      .x-insthint button { position: absolute; top: 6px; right: 8px; background: none; border: 0; color: #fff; font-size: 20px; }
+    </style>
   </head>
   <body>
     <div class="x-bg" aria-hidden="true"><span class="x-orb x-orb--1"></span><span class="x-orb x-orb--2"></span><span class="x-orb x-orb--3"></span><span class="x-orb x-orb--4"></span></div>
@@ -405,7 +419,7 @@
       <main class="main">
         <div class="x-app" id="tool">
           <div class="x-top">
-            <div class="x-top__row"><h1 data-i18n="title">Long to Shorts</h1><div class="x-top__acts"><div class="x-seg x-lang" role="radiogroup" aria-label="Language / भाषा"><input type="radio" name="uilang" id="langEn" value="en" checked /><label for="langEn" lang="en">EN</label><input type="radio" name="uilang" id="langHi" value="hi" /><label for="langHi" lang="hi">हिंदी</label></div><button class="x-btn x-snd" type="button" id="uisnd" aria-pressed="true" aria-label="UI sounds on" title="UI sounds">🔊</button></div></div>
+            <div class="x-top__row"><h1 data-i18n="title">Long to Shorts</h1><div class="x-top__acts"><div class="x-seg x-lang" role="radiogroup" aria-label="Language / भाषा"><input type="radio" name="uilang" id="langEn" value="en" checked /><label for="langEn" lang="en">EN</label><input type="radio" name="uilang" id="langHi" value="hi" /><label for="langHi" lang="hi">हिंदी</label></div><button class="x-btn x-inst" type="button" id="instBtn" hidden data-i18n="instBtn">📲 Install app</button><button class="x-btn x-snd" type="button" id="uisnd" aria-pressed="true" aria-label="UI sounds on" title="UI sounds">🔊</button></div></div>
             <p data-i18n="tagline">Turn one long video into short vertical clips of 30 to 60 seconds, right in your browser.</p>
             <ul class="x-badges" aria-label="Features"><li class="pill" data-i18n="b1">No signup</li><li class="pill" data-i18n="b2">No watermark</li><li class="pill" data-i18n="b3">100% free</li><li class="pill" data-i18n="b4">Runs on your device</li></ul>
           </div>
@@ -911,7 +925,7 @@
             <p class="x-sec__lead" data-i18n="soonL">We are building these next. Tell us on Instagram which one you want first.</p>
           </div>
           <ul class="x-cards">
-            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">📲</span><h3 data-i18n="c1T">Install as app (PWA)</h3><p data-i18n="c1P">Add Long to Shorts to your home screen and open it like an app, even offline.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
+            <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">📲</span><h3 data-i18n="c1T">Install as app</h3><p data-i18n="c1P">Add Long to Shorts to your home screen and open it like an app, even offline.</p><button class="x-btn x-inst" type="button" id="instBtn2" data-i18n="instNow">Install now</button></li>
             <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">🚀</span><h3 data-i18n="c2T">Share to Instagram &amp; YouTube</h3><p data-i18n="c2P">Send finished clips straight to Reels and Shorts from the clip list.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
             <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">💾</span><h3 data-i18n="c3T">Saved presets &amp; recent projects</h3><p data-i18n="c3P">Save your favourite style and pick up where you left off.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
             <li class="x-cardx"><span class="x-cardx__ic" aria-hidden="true">💡</span><h3 data-i18n="c4T">Daily trending hooks</h3><p data-i18n="c4P">Fresh hook ideas every day for gaming, podcasts, motivation and stories.</p><span class="x-soonpill" data-i18n="soonPill">Soon</span></li>
@@ -1098,7 +1112,7 @@
           iTrendNote: "चुने हुए फ़ॉर्मेट, लाइव डेटा नहीं। अपनी कैटेगरी में क्या चल रहा है, वो भी देखें।",
           iIg: "टूल अभी टेस्टिंग में है। कोई सुझाव या दिक्कत? Instagram पर DM करें", iGo: "क्लिप बनाना शुरू करें",
           soonK: "आगे क्या", soonT: "जल्द आ रहा है", soonL: "हम आगे ये बना रहे हैं। Instagram पर बताएँ कि आपको सबसे पहले कौन-सा चाहिए।", soonPill: "जल्द",
-          c1T: "ऐप की तरह इंस्टॉल (PWA)", c1P: "Long to Shorts को होम स्क्रीन पर जोड़ें और ऐप की तरह खोलें, ऑफ़लाइन भी।",
+          c1T: "ऐप की तरह इंस्टॉल करें", c1P: "Long to Shorts को होम स्क्रीन पर जोड़ें और ऐप की तरह खोलें, ऑफ़लाइन भी।", instBtn: "📲 ऐप इंस्टॉल करें", instNow: "अभी इंस्टॉल करें",
           c2T: "Instagram और YouTube पर शेयर", c2P: "तैयार क्लिप्स सीधे क्लिप लिस्ट से रील्स और शॉर्ट्स पर भेजें।",
           c3T: "सेव प्रीसेट और हाल के प्रोजेक्ट", c3P: "अपना पसंदीदा स्टाइल सेव करें और जहाँ छोड़ा था वहीं से शुरू करें।",
           c4T: "रोज़ के ट्रेंडिंग हुक", c4P: "गेमिंग, पॉडकास्ट, मोटिवेशन और कहानियों के लिए हर दिन नए हुक आइडिया।",
@@ -2760,6 +2774,57 @@
         });
         drop.addEventListener("drop", function (e) { if (e.dataTransfer && e.dataTransfer.files[0]) loadFile(e.dataTransfer.files[0]); });
         $("another").addEventListener("click", function () { if (!S.busy) fileInput.click(); });
+
+        /* ---------- install as app + receive shared video ---------- */
+        (function () {
+          var hi = function () { return document.documentElement.lang === "hi"; };
+          var deferred = null, standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+          var b1 = $("instBtn"), b2 = $("instBtn2");
+          function showHint(msg) {
+            var old = document.querySelector(".x-insthint"); if (old) old.remove();
+            var d = document.createElement("div"); d.className = "x-insthint"; d.setAttribute("role", "status");
+            d.textContent = msg;
+            var x = document.createElement("button"); x.type = "button"; x.setAttribute("aria-label", "Close"); x.textContent = "×";
+            x.addEventListener("click", function () { d.remove(); }); d.appendChild(x); document.body.appendChild(d);
+            setTimeout(function () { if (d.parentNode) d.remove(); }, 12000);
+          }
+          function doInstall() {
+            if (standalone) { showHint(hi() ? "ऐप पहले से इंस्टॉल है।" : "The app is already installed."); return; }
+            if (deferred) {
+              deferred.prompt();
+              deferred.userChoice.then(function () { deferred = null; if (b1) b1.hidden = true; }).catch(function () {});
+              return;
+            }
+            var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+            showHint(ios
+              ? (hi() ? "Safari में शेयर बटन दबाएँ, फिर 'Add to Home Screen' चुनें।" : "In Safari, tap the Share button, then 'Add to Home Screen'.")
+              : (hi() ? "Chrome मेनू (⋮) खोलें और 'Install app' या 'Add to Home screen' चुनें।" : "Open the Chrome menu (⋮) and tap 'Install app' or 'Add to Home screen'."));
+          }
+          if (b1) b1.addEventListener("click", doInstall);
+          if (b2) { b2.addEventListener("click", doInstall); if (standalone) b2.hidden = true; }
+          window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); deferred = e; if (b1 && !standalone) b1.hidden = false; });
+          window.addEventListener("appinstalled", function () { deferred = null; if (b1) b1.hidden = true; if (b2) b2.hidden = true; standalone = true; showHint(hi() ? "इंस्टॉल हो गया! अब होम स्क्रीन से खोलें।" : "Installed! Open it from your home screen."); });
+          if ("serviceWorker" in navigator && location.protocol === "https:") {
+            window.addEventListener("load", function () { navigator.serviceWorker.register("sw.js").catch(function () {}); });
+          }
+          // A video shared into the app from the gallery / share menu
+          try {
+            var qs = new URLSearchParams(location.search);
+            if (qs.get("shared") === "1" && window.caches) {
+              history.replaceState(null, "", location.pathname + location.hash);
+              caches.open("lts-share").then(function (c) {
+                return c.match("./shared-video").then(function (r) {
+                  if (!r) { showHint(hi() ? "शेयर किया गया वीडियो नहीं मिला। कृपया वीडियो चुनें।" : "Couldn't receive the shared video. Please choose it again."); return; }
+                  var nm = decodeURIComponent(r.headers.get("X-Name") || "shared-video.mp4"), ty = r.headers.get("Content-Type") || "video/mp4";
+                  return r.blob().then(function (bl) {
+                    c.delete("./shared-video");
+                    loadFile(new File([bl], nm, { type: ty }));
+                  });
+                });
+              }).catch(function () {});
+            }
+          } catch (e) {}
+        })();
 
         function resetAll() {
           S.thumbToken++;
